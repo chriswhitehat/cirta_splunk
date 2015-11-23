@@ -1,0 +1,24 @@
+<form>
+  <label>Sguil Flow</label>
+  <fieldset submitButton="true">
+    <input type="time" token="selTime">
+      <label></label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="selSrcIP">
+      <label>Source IP</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selDstIP">
+      <label>Destination IP</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selSearchTerms">
+      <label>Search Terms</label>
+      <default>*</default>
+    </input>
+  </fieldset>
+</form>

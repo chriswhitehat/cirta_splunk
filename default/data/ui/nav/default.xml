@@ -1,0 +1,18 @@
+<nav search_view="search" color="#65A637">
+  <view name="search" />
+  <a href="incident_status" default="true">Incident Status</a>
+  <a href="incident_details">Incident Details</a>
+  <collection label="Metrics">
+    <view name="incident_metrics" />
+    <view name="stage_metrics" />
+    <view name="categorizations" />
+    <view name="usage_metrics" />
+  </collection>
+  <collection label="Splunk">
+    <view name="data_models" />
+    <view name="reports" />
+    <view name="alerts" />
+    <view name="dashboards" />
+  </collection>
+</nav>
+

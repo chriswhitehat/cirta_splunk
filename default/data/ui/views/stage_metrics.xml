@@ -1,0 +1,76 @@
+<form>
+  <label>Stage Metrics</label>
+  <fieldset submitButton="false">
+    <input type="time" token="selTime" searchWhenChanged="true">
+      <label></label>
+      <default>
+        <earliest>-3mon</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="dropdown" token="selStage">
+      <label>Stage</label>
+      <choice value="detection">Detection</choice>
+      <choice value="containment">Containment</choice>
+      <choice value="mitigation">Mitigation</choice>
+      <choice value="recovery">Recovery</choice>
+      <choice value="incident">Incident</choice>
+      <default>detection</default>
+    </input>
+    <input type="dropdown" token="selSpanBy">
+      <label>By</label>
+      <choice value="d">Day</choice>
+      <choice value="w">Week</choice>
+      <choice value="mon">Month</choice>
+      <choice value="q">Quarter</choice>
+      <choice value="y">Year</choice>
+      <default>mon</default>
+    </input>
+    <input type="dropdown" token="selTimeScale">
+      <label>In</label>
+      <choice value="/1">Seconds</choice>
+      <choice value="/60">Minutes</choice>
+      <choice value="/60/60">Hours</choice>
+      <choice value="/60/60/24">Days</choice>
+      <default>/60</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <chart>
+        <title>Stage Durations</title>
+        <search>
+          <query>index=cirta [|inputlookup cirta_state_lookup | search triage_status="acknowledged" | fields cirta_id] | stats c by cirta_id | lookup cirta_state_lookup cirta_id | `$selStage$_duration_seconds` | where isnotnull($selStage$_duration) | eval $selStage$_duration = $selStage$_duration $selTimeScale$ | eval _time = cirta_id | timechart span=1$selSpanBy$ count AS incident_count  mean($selStage$_duration) AS mean_$selStage$_duration median($selStage$_duration) AS median_$selStage$_duration</query>
+          <earliest>$selTime.earliest$</earliest>
+          <latest>$selTime.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">true</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">zero</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="charting.chart.overlayFields">incident_count</option>
+        <option name="charting.axisY2.maximumNumber">100</option>
+        <option name="charting.axisY2.minimumNumber">0</option>
+        <option name="charting.axisTitleY2.text">Incident Count</option>
+        <option name="charting.axisTitleY.text">Duration</option>
+      </chart>
+    </panel>
+  </row>
+</form>

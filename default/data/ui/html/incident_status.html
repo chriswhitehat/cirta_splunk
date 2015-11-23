@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Incident Status | Splunk</title>
+    <link rel="shortcut icon" href="{{SPLUNKWEB_URL_PREFIX}}/static/img/favicon.ico" />
+        <link rel="stylesheet" type="text/css" href="/en-US/static/@237341/css/build/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="/en-US/static/@237341/css/build/pages/dashboard-simple-bootstrap.min.css" />
+    <!--[if IE 7]><link rel="stylesheet" href="{{SPLUNKWEB_URL_PREFIX}}/static/css/sprites-ie7.css" /><![endif]-->
+</head>
+<body class="simplexml preload locale-en">
+<!-- 
+BEGIN LAYOUT
+This section contains the layout for the dashboard. Splunk uses proprietary
+styles in <div> tags, similar to Bootstrap's grid system. 
+-->
+<a class="navSkip" href="#navSkip" tabindex="1">Screen reader users, click here to skip the navigation bar</a>
+<div class="header splunk-header">
+        <div id="placeholder-splunk-bar">
+            <a href="{{SPLUNKWEB_URL_PREFIX}}/app/launcher/home" class="brand" title="splunk &gt; listen to your data">splunk<strong>&gt;</strong></a>
+        </div>
+            <div id="placeholder-app-bar"></div>
+</div>
+<a id="navSkip"></a>
+<div class="dashboard-body container-fluid main-section-body" data-role="main">
+    <div class="dashboard-header clearfix">
+        <h2>Incident Status</h2>
+    </div>
+	<div class="fieldset">
+		<div class="input input-timerangepicker" id="input4">
+			<label>&nbsp;</label>
+		</div>
+		<div class="input input-multiselect" id="input3">
+			<label>CIRTA Status</label>
+		</div>
+               
+    </div>
+    <div id="row1" class="dashboard-row dashboard-row1">
+        <div id="panel1" class="dashboard-cell" style="width: 100%;">
+            <div class="dashboard-panel clearfix">
+                <h2 class="panel-title">Tracked Triage</h2>
+				
+				
+                <div class="fieldset">
+					<div class="input input-text" id="input1">
+						<label>CIRTA ID</label>
+					</div>
+					<div class="input input-dropdown" id="input2">
+						<label>Triage Action</label>
+					</div>
+					<div class="form-submit" id="search_btn">
+						<button class="btn btn-primary submit">Apply</button>
+					</div>
+				</div>
+				
+                
+                <div class="panel-element-row">
+                    <div id="element1" class="dashboard-element table" style="width: 100%">
+                        <div class="panel-body"></div>
+                    </div>
+                </div>
+            
+			
+            </div>
+        </div>
+    </div>
+	<div class="fieldset">
+		<div class="input input-timerangepicker" id="input5">
+			<label>&nbsp;</label>
+		</div>
+        <div class="input input-dropdown" id="input11">
+		    <label>Included IR Stages</label>
+		</div>
+		<div class="input input-multiselect" id="input8">
+			<label>Excluded IR Stages</label>
+		</div>
+	</div>
+	
+    <div id="row2" class="dashboard-row dashboard-row2">
+        <div id="panel2" class="dashboard-cell" style="width: 100%;">
+            <div class="dashboard-panel clearfix">
+                <h2 class="panel-title">Tracked Current Status</h2>
+				<div class="fieldset">
+					<div class="input input-text" id="input6">
+						<label>CIRTA ID</label>
+					</div>
+					<div class="input input-dropdown" id="input7">
+						<label>IR Stage</label>
+					</div>
+					<div class="input input-text" id="input9">
+						<label>Completion (YYYY-mm-dd HH:MM)</label>
+					</div>
+					<div class="input input-text" id="input10">
+						<label>Comment</label>
+					</div>
+					<div class="form-submit" id="stage_btn">
+						<button class="btn btn-primary Update">Update</button>
+					</div>
+
+					<div class="form-submit" id="details_btn">
+						<button class="btn btn-primary ">Incident Details</button>
+					</div>
+				</div>
+                
+                <div class="panel-element-row">
+                    <div id="element3" class="dashboard-element table" style="width: 100%">
+                        <div class="panel-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer"></div>
+
+<!-- 
+END LAYOUT
+-->
+
+<script src="{{SPLUNKWEB_URL_PREFIX}}/config?autoload=1"></script>
+<script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/i18n.js"></script>
+<script src="{{SPLUNKWEB_URL_PREFIX}}/i18ncatalog?autoload=1"></script>
+<script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/build/simplexml.min/config.js"></script>
+<script type="text/javascript">
+require.config({
+    baseUrl: "{{SPLUNKWEB_URL_PREFIX}}/static/js",
+    waitSeconds: 0 // Disable require.js load timeout
+});
+
+//
+// LIBRARY REQUIREMENTS
+//
+// In the require function, we include the necessary libraries and modules for
+// the HTML dashboard. Then, we pass variable names for these libraries and
+// modules as function parameters, in order.
+// 
+// When you add libraries or modules, remember to retain this mapping order
+// between the library or module and its function parameter. You can do this by
+// adding to the end of these lists, as shown in the commented examples below.
+
+require([
+    "splunkjs/mvc",
+    "splunkjs/mvc/utils",
+    "splunkjs/mvc/tokenutils",
+    "underscore",
+    "jquery",
+    "splunkjs/mvc/simplexml",
+    "splunkjs/mvc/headerview",
+    "splunkjs/mvc/footerview",
+    "splunkjs/mvc/simplexml/dashboardview",
+    "splunkjs/mvc/simplexml/dashboard/panelref",
+    "splunkjs/mvc/simplexml/element/chart",
+    "splunkjs/mvc/simplexml/element/event",
+    "splunkjs/mvc/simplexml/element/html",
+    "splunkjs/mvc/simplexml/element/list",
+    "splunkjs/mvc/simplexml/element/map",
+    "splunkjs/mvc/simplexml/element/single",
+    "splunkjs/mvc/simplexml/element/table",
+    "splunkjs/mvc/simpleform/formutils",
+    "splunkjs/mvc/simplexml/eventhandler",
+    "splunkjs/mvc/simpleform/input/dropdown",
+    "splunkjs/mvc/simpleform/input/radiogroup",
+    "splunkjs/mvc/simpleform/input/multiselect",
+    "splunkjs/mvc/simpleform/input/checkboxgroup",
+    "splunkjs/mvc/simpleform/input/text",
+    "splunkjs/mvc/simpleform/input/timerange",
+    "splunkjs/mvc/simpleform/input/submit",
+    "splunkjs/mvc/searchmanager",
+    "splunkjs/mvc/savedsearchmanager",
+    "splunkjs/mvc/postprocessmanager",
+    "splunkjs/mvc/simplexml/urltokenmodel"
+    // Add comma-separated libraries and modules manually here, for example:
+    // ..."splunkjs/mvc/simplexml/urltokenmodel",
+    // "splunkjs/mvc/checkboxview"
+    ],
+    function(
+        mvc,
+        utils,
+        TokenUtils,
+        _,
+        $,
+        DashboardController,
+        HeaderView,
+        FooterView,
+        Dashboard,
+        PanelRef,
+        ChartElement,
+        EventElement,
+        HtmlElement,
+        ListElement,
+        MapElement,
+        SingleElement,
+        TableElement,
+        FormUtils,
+        EventHandler,
+        DropdownInput,
+        RadioGroupInput,
+        MultiSelectInput,
+        CheckboxGroupInput,
+        TextInput,
+        TimeRangeInput,
+        SubmitButton,
+        SearchManager,
+        SavedSearchManager,
+        PostProcessManager,
+        UrlTokenModel
+
+        // Add comma-separated parameter names here, for example: 
+        // ...UrlTokenModel, 
+        // CheckboxView
+        ) {
+
+
+
+        var pageLoading = true;
+
+
+        // 
+        // TOKENS
+        //
+        
+        // Create token namespaces
+        var urlTokenModel = new UrlTokenModel();
+        mvc.Components.registerInstance('url', urlTokenModel);
+        var defaultTokenModel = mvc.Components.getInstance('default', {create: true});
+        var submittedTokenModel = mvc.Components.getInstance('submitted', {create: true});
+
+        urlTokenModel.on('url:navigate', function() {
+            defaultTokenModel.set(urlTokenModel.toJSON());
+            if (!_.isEmpty(urlTokenModel.toJSON()) && !_.all(urlTokenModel.toJSON(), _.isUndefined)) {
+                submitTokens();
+            } else {
+                submittedTokenModel.clear();
+            }
+        });
+
+        // Initialize tokens
+        defaultTokenModel.set(urlTokenModel.toJSON());
+
+        function submitTokens() {
+            // Copy the contents of the defaultTokenModel to the submittedTokenModel and urlTokenModel
+            FormUtils.submitForm({ replaceState: pageLoading });
+        }
+
+        function setToken(name, value) {
+            defaultTokenModel.set(name, value);
+            submittedTokenModel.set(name, value);
+        }
+
+        function unsetToken(name) {
+            defaultTokenModel.unset(name);
+            submittedTokenModel.unset(name);
+        }
+
+        var nowUTC = new Date();
+		t = new Date(nowUTC + " UTC");
+		setToken("form.selStageTime", t.toJSON().substr(0,16).replace("T", " "));
+        
+        //
+        // SEARCH MANAGERS
+        //
+
+        var search1 = new SearchManager({
+            "id": "search1",
+            "earliest_time": "$selTriageTime.earliest$",
+            "latest_time": "$selTriageTime.latest$",
+            "search": "index=cirta tracked=true testing=False level=STATE | eval _key = cirta_id |  lookup cirta_state_lookup _key OUTPUT triage_status | where isnull(triage_status)  | rename analystUsername AS analyst | stats first(_time) AS _time first(cirta_status) AS cirta_status first(eventDT) AS event_time first(carts_ticket) AS carts_ticket first(ir_ticket) AS ir_ticket first(username) AS username first(description) AS description first(analyst) AS analyst first(ip_address) AS ip_address by cirta_id playbook | search $selCirtaStatus$  | table _time event_time cirta_id playbook analyst ip_address username description ir_ticket carts_ticket cirta_status | sort -cirta_id",
+            "status_buckets": 0,
+            "cancelOnUnload": true,
+            "app": utils.getCurrentApp(),
+            "auto_cancel": 90,
+            "preview": true,
+            "runWhenTimeIsUndefined": false
+        }, {tokens: true, tokenNamespace: "submitted"});
+
+        var search2 = new SearchManager({
+            "id": "search2",
+			"autostart": "false",
+            "earliest_time": "$selTriageTime.earliest$",
+            "latest_time": "$selTriageTime.latest$",
+            "search": "index=cirta cirta_id=\"$selCirtaID$\" level=STATE | head 1 | eval triage_status=\"$selTriageAction$\" | eval _key = cirta_id | eval update_time = now() | eval event_time = strptime(eventDT, \"%Y-%m-%d %H:%M:%S\") | eval detection_time = cirta_id | eval ir_stage = if(isnotnull(detection_time), \"containment\", \"detection\") | eval ir_stage = if(isnotnull(containment_time), \"mitigation\", ir_stage) | eval ir_stage = if(isnotnull(mitigation_time), \"recovery\", ir_stage) | eval ir_stage = if(isnotnull(recovery_time), \"closed\", ir_stage) | fields _key update_time cirta_id triage_status ir_stage event_time detection_time detection_note containment_time containment_note mitigation_time mitigation_note recovery_time recovery_note | outputlookup cirta_state_lookup append=true",
+			"status_buckets": 0,
+            "cancelOnUnload": true,
+            "app": utils.getCurrentApp(),
+            "auto_cancel": 90,
+            "preview": true,
+            "runWhenTimeIsUndefined": false
+        }, {tokens: true, tokenNamespace: "submitted"});
+
+		search2.on("search:done", function(newValue) {
+            search1.startSearch();
+			search3.startSearch();
+        });
+		
+        var search3 = new SearchManager({
+            "id": "search3",
+            "earliest_time": "$field1.earliest$",
+            "latest_time": "$field1.latest$",
+            "search": "index=cirta tracked=true adhoc=false testing=False | eval _key = cirta_id | lookup cirta_state_lookup _key OUTPUT triage_status ir_stage | search triage_status=acknowledged ir_stage=\"$selIncludeIRStage$\" $selExcludeIRStage$ | rename analystUsername AS analyst | stats first(_time) AS _time first(eventDT) AS event_time first(carts_ticket) AS carts_ticket first(ir_ticket) AS ir_ticket first(username) AS username first(description) AS description first(analyst) AS analyst first(ip_address) AS ip_address by cirta_id playbook ir_stage  | table _time event_time cirta_id playbook analyst ip_address username description ir_ticket carts_ticket ir_stage | sort -cirta_id",
+			"status_buckets": 0,
+            "cancelOnUnload": true,
+            "app": utils.getCurrentApp(),
+            "auto_cancel": 90,
+            "preview": true,
+            "runWhenTimeIsUndefined": false
+        }, {tokens: true, tokenNamespace: "submitted"});
+		
+		var search4 = new SearchManager({
+            "id": "search4",
+            "earliest_time": "$field1.earliest$",
+            "latest_time": "$field1.latest$",
+            "search": "| inputlookup cirta_state_lookup | search cirta_id=\"$selStageCirtaID$\" | eval update_time = now() | eval $selIRStage$_time = strptime(\"$selStageTime$\", \"%Y-%m-%d %H:%M\") | eval mitigation_time = if(isnull(mitigation_time) AND isnotnull(recovery_time), recovery_time, mitigation_time) | eval containment_time = if(isnull(containment_time) AND isnotnull(mitigation_time), mitigation_time, containment_time) | eval detection_time = if(isnull(detection_time) AND isnotnull(containment_time), containment_time, detection_time) | eval ir_stage = if(isnotnull(detection_time), \"containment\", \"detection\") | eval ir_stage = if(isnotnull(containment_time), \"mitigation\", ir_stage) | eval ir_stage = if(isnotnull(mitigation_time), \"recovery\", ir_stage) | eval ir_stage = if(isnotnull(recovery_time), \"closed\", ir_stage) | eval $selIRStage$_note = \"$selStageComment$\" | fields _key update_time cirta_id triage_status ir_stage event_time detection_time detection_note containment_time containment_note mitigation_time mitigation_note recovery_time recovery_note | outputlookup cirta_state_lookup append=true",
+			"status_buckets": 0,
+            "cancelOnUnload": true,
+            "app": utils.getCurrentApp(),
+            "auto_cancel": 90,
+            "preview": true,
+            "runWhenTimeIsUndefined": false
+        }, {tokens: true, tokenNamespace: "submitted"});
+
+		search4.on("search:done", function(newValue) {
+            search3.startSearch();
+        });
+
+
+
+        //
+        // SPLUNK HEADER AND FOOTER
+        //
+
+        new HeaderView({
+            id: 'header',
+            section: 'dashboards',
+            el: $('.header'),
+            acceleratedAppNav: true,
+            useSessionStorageCache: true,
+            splunkbar: true,
+            appbar: true,
+            litebar: false,
+        }, {tokens: true}).render();
+
+        new FooterView({
+            id: 'footer',
+            el: $('.footer')
+        }, {tokens: true}).render();
+
+
+        //
+        // DASHBOARD EDITOR
+        //
+
+        new Dashboard({
+            id: 'dashboard',
+            el: $('.dashboard-body'),
+            showTitle: true,
+            editable: true
+        }, {tokens: true}).render();
+
+
+        //
+        // VIEWS: VISUALIZATION ELEMENTS
+        //
+
+        var element1 = new TableElement({
+            "id": "element1",
+            "count": 5,
+            "dataOverlayMode": "none",
+            "drilldown": "row",
+            "refresh.auto.interval": "300",
+            "rowNumbers": "false",
+            "wrap": "true",
+            "managerid": "search1",
+            "el": $('#element1')
+        }, {tokens: true, tokenNamespace: "submitted"}).render();
+
+        element1.on("click", function(e) {
+            if (e.field !== undefined) {
+                e.preventDefault();
+                setToken("form.selCirtaID", TokenUtils.replaceTokenNames("$row.cirta_id$", _.extend(submittedTokenModel.toJSON(), e.data)));
+            }
+        });
+        
+        var element2 = new SingleElement({
+            "id": "element2",
+            "linkView": "search",
+            "drilldown": "none",
+            "managerid": "search2",
+            "el": $('#element2')
+        }, {tokens: true, tokenNamespace: "submitted"}).render();
+        
+        var element3 = new TableElement({
+            "id": "element3",
+            "count": 20,
+            "dataOverlayMode": "none",
+            "drilldown": "row",
+            "refresh.auto.interval": "600",
+            "rowNumbers": "true",
+            "wrap": "true",
+            "managerid": "search3",
+            "el": $('#element3')
+        }, {tokens: true, tokenNamespace: "submitted"}).render();
+
+        element3.on("click", function(e) {
+            if (e.field !== undefined) {
+                e.preventDefault();
+				setToken("form.selStageCirtaID", TokenUtils.replaceTokenNames("$row.cirta_id$", _.extend(submittedTokenModel.toJSON(), e.data)));
+            }
+        });
+        
+		var element4 = new SingleElement({
+            "id": "element4",
+            "linkView": "search",
+            "drilldown": "none",
+            "managerid": "search4",
+            "el": $('#element4')
+        }, {tokens: true, tokenNamespace: "submitted"}).render();
+
+        //
+        // VIEWS: FORM INPUTS
+        //
+        var input1 = new TextInput({
+            "id": "input1",
+            "searchWhenChanged": false,
+            "value": "$form.selCirtaID$",
+            "el": $('#input1')
+        }, {tokens: true}).render();
+
+        input1.on("change", function(newValue) {
+            FormUtils.handleValueChange(input1);
+        });
+
+    
+        var input2 = new DropdownInput({
+            "id": "input2",
+            "choices": [
+                {"value": "acknowledged", "label": "Acknowledge"},
+                {"value": "discarded", "label": "Discard"},
+                {"value": "duplicate", "label": "Duplicate"}
+            ],
+            "searchWhenChanged": false,
+            "selectFirstChoice": false,
+            "showClearButton": true,
+            "value": "$form.selTriageAction$",
+            "el": $('#input2')
+        }, {tokens: true}).render();
+
+        input2.on("change", function(newValue) {
+            FormUtils.handleValueChange(input2);
+        });
+
+    
+        var input3 = new MultiSelectInput({
+            "id": "input3",
+            "choices": [
+                {"value": "*", "label": "All"},
+                {"value": "finished", "label": "Finished"},
+                {"value": "running", "label": "Running"},
+                {"value": "aborted", "label": "Aborted"},
+                {"value": "failure", "label": "Failure"}
+            ],
+            "default": ["finished", "running"],
+            "searchWhenChanged": true,
+            "delimiter": " OR ",
+            "valueSuffix": "\"",
+            "valuePrefix": "cirta_status=\"",
+            "value": "$form.selCirtaStatus$",
+            "el": $('#input3')
+        }, {tokens: true}).render();
+
+        input3.on("change", function(newValue) {
+            FormUtils.handleValueChange(input3);
+        });
+
+    
+        var input4 = new TimeRangeInput({
+            "id": "input4",
+            "default": {"latest_time": "now", "earliest_time": "-3mon"},
+            "searchWhenChanged": true,
+            "earliest_time": "$form.selTriageTime.earliest$",
+            "latest_time": "$form.selTriageTime.latest$",
+            "el": $('#input4')
+        }, {tokens: true}).render();
+
+        input4.on("change", function(newValue) {
+            FormUtils.handleValueChange(input4);
+        });
+
+    
+        var input5 = new TimeRangeInput({
+            "id": "input5",
+            "default": {"latest_time": "now", "earliest_time": "-3mon"},
+            "searchWhenChanged": true,
+            "earliest_time": "$form.field1.earliest$",
+            "latest_time": "$form.field1.latest$",
+            "el": $('#input5')
+        }, {tokens: true}).render();
+
+        input5.on("change", function(newValue) {
+            FormUtils.handleValueChange(input5);
+        });
+
+		var input6 = new TextInput({
+            "id": "input6",
+            "searchWhenChanged": false,
+            "value": "$form.selStageCirtaID$",
+            "el": $('#input6')
+        }, {tokens: true}).render();
+
+        input6.on("change", function(newValue) {
+            FormUtils.handleValueChange(input6);
+			submitTokens();
+        });
+
+    
+        var input7 = new DropdownInput({
+            "id": "input7",
+            "choices": [
+                {"value": "detection", "label": "Detection"},
+                {"value": "containment", "label": "Containment"},
+                {"value": "mitigation", "label": "Mitigation"},
+                {"value": "recovery", "label": "Recovery"}
+			],
+			"default": "containment",
+            "searchWhenChanged": false,
+            "selectFirstChoice": false,
+            "showClearButton": true,
+            "value": "$form.selIRStage$",
+            "el": $('#input7')
+        }, {tokens: true}).render();
+
+        input7.on("change", function(newValue) {
+            FormUtils.handleValueChange(input7);
+        });
+		
+		var input8 = new MultiSelectInput({
+            "id": "input8",
+            "choices": [
+                {"value": "NONE", "label": "None"},
+                {"value": "detection", "label": "Detection"},
+                {"value": "containment", "label": "Containment"},
+                {"value": "mitigation", "label": "Mitigation"},
+                {"value": "recovery", "label": "Recovery"},
+				{"value": "closed", "label": "Closed"}
+            ],
+            "default": ["closed"],
+            "searchWhenChanged": true,
+            "delimiter": " AND ",
+            "valueSuffix": "\"",
+            "valuePrefix": "ir_stage!=\"",
+            "value": "$form.selExcludeIRStage$",
+            "el": $('#input8')
+        }, {tokens: true}).render();
+
+        input8.on("change", function(newValue) {
+            FormUtils.handleValueChange(input8);
+        });
+		
+		var input9 = new TextInput({
+            "id": "input9",
+            "searchWhenChanged": false,
+            "value": "$form.selStageTime$",
+            "el": $('#input9')
+        }, {tokens: true}).render();
+
+        input9.on("change", function(newValue) {
+			setToken('form.selStageTime', input9.val().trim());
+            FormUtils.handleValueChange(input9);
+        });
+		
+		var input10 = new TextInput({
+            "id": "input10",
+			"default": " ",
+            "searchWhenChanged": false,
+            "value": "$form.selStageComment$",
+            "el": $('#input10')
+        }, {tokens: true}).render();
+
+        input10.on("change", function(newValue) {
+            FormUtils.handleValueChange(input10);
+        });
+  
+        var input11 = new DropdownInput({
+            "id": "input11",
+            "choices": [
+                {"value": "*", "label": "All"},
+                {"value": "detection", "label": "Detection"},
+                {"value": "containment", "label": "Containment"},
+                {"value": "mitigation", "label": "Mitigation"},
+                {"value": "recovery", "label": "Recovery"},
+                {"value": "closed", "label": "Closed"}
+			],
+			"default": "*",
+            "searchWhenChanged": true,
+            "selectFirstChoice": false,
+            "showClearButton": true,
+            "value": "$form.selIncludeIRStage$",
+            "el": $('#input11')
+        }, {tokens: true}).render();
+
+        input11.on("change", function(newValue) {
+            FormUtils.handleValueChange(input11);
+        });
+  
+
+        // 
+        // SUBMIT FORM DATA
+        //
+
+        var submit = new SubmitButton({
+            id: 'submit',
+			text: 'Update',
+            el: $('#search_btn')
+        }, {tokens: true}).render();
+
+        submit.on("submit", function() {
+			submitTokens();
+        });
+		
+		var submitStage = new SubmitButton({
+            id: 'submitStage',
+			text: 'Update',
+            el: $('#stage_btn')
+        }, {tokens: true}).render();
+
+        submitStage.on("submit", function() {
+			if(input9.val().match(
+				/\d{4}-[01]\d-[0-3]\d [0-2]\d:[0-5]\d$/
+			)) {
+				submitTokens();
+			}else{
+				alert('Stage time format error. Cannot update until corrected.');
+			}
+            //submitTokens();
+		});
+		
+		var details = new SubmitButton({
+            id: 'details',
+			text: 'Incident Details',
+            el: $('#details_btn')
+        }, {tokens: true}).render();
+
+        details.on("submit", function() {
+			submitTokens();
+			var url = TokenUtils.replaceTokenNames("{{SPLUNKWEB_URL_PREFIX}}/app/cirta/incident_details?form.selCirtaID=$form.selStageCirtaID$", submittedTokenModel.toJSON());
+            utils.redirect(url, false, "Incident Details");
+            //submitTokens();
+        });
+
+		
+        // Initialize time tokens to default
+        if (!defaultTokenModel.has('earliest') && !defaultTokenModel.has('latest')) {
+            defaultTokenModel.set({ earliest: '0', latest: '' });
+        }
+
+        submitTokens();
+
+
+        //
+        // DASHBOARD READY
+        //
+
+        DashboardController.ready();
+        pageLoading = false;
+
+    }
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Incident Details | Splunk</title>
+	<link rel="shortcut icon" href="{{SPLUNKWEB_URL_PREFIX}}/static/img/favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="/en-US/static/@237341/css/build/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="/en-US/static/@237341/css/build/pages/dashboard-simple-bootstrap.min.css" />
+	<!--[if IE 7]><link rel="stylesheet" href="{{SPLUNKWEB_URL_PREFIX}}/static/css/sprites-ie7.css" /><![endif]-->
+	<style media="screen" type="text/css">
+		.edit-dashboard-menu {
+			margin-right: -60px;
+		}
+
+		.dashboard-body {
+			padding-left:0px;
+			padding-right:0px
+		}
+
+		.help-link {
+			position: absolute;
+			right: 20px;
+			top: 10px;
+		}
+
+		.tab-content {
+			padding: 25px;
+			background-color: #fff;
+			background-image: linear-gradient(to bottom, #fff 60px, #f5f5f5 100px);
+		}
+
+		.tab-title-text {
+			font-size:13px;
+		}
+
+		.tab-pane {
+			background-color:transparent;
+		}
+
+		.drop-down-label {
+			display: inline-block;
+		}
+
+		.info-messages {
+			position: relative;
+			top: -20px;
+			margin-bottom: -10px;
+		}
+		
+		.info-message {
+			margin-bottom: 0px;
+		}
+		
+		.pool-overlay {
+			position: relative;
+			top: -30px;
+			left: 211px;
+		}
+
+			
+	</style>
+</head>
+<body class="simplexml preload locale-en">
+<!-- 
+BEGIN LAYOUT
+This section contains the layout for the dashboard. Splunk uses proprietary
+styles in <div> tags, similar to Bootstrap's grid system. 
+-->
+<a class="navSkip" href="#navSkip" tabindex="1">Screen reader users, click here to skip the navigation bar</a>
+<div class="header splunk-header">
+		<div id="placeholder-splunk-bar">
+			<a href="{{SPLUNKWEB_URL_PREFIX}}/app/launcher/home" class="brand" title="splunk &gt; listen to your data">splunk<strong>&gt;</strong></a>
+		</div>
+			<div id="placeholder-app-bar"></div>
+</div>
+<a id="navSkip"></a>
+<div class="dashboard-body container-fluid main-section-body" role="main">
+	<div class="section-padded section-header">
+		<div class="dashboard-header clearfix">
+			<h2>Incident Details</h2>
+		</div>
+		<div class="fieldset">
+			<div class="input input-text" id="inputCirtaID">
+				<label>Cirta ID</label>
+			</div>
+			<div class="form-submit" id="search_btn">
+				<button class="btn btn-primary submit">Submit</button>
+			</div>
+		</div>
+		<div id="row1" class="dashboard-row dashboard-row1">
+			<div id="panel1" class="dashboard-cell" style="width: 20%;">
+				<div class="dashboard-panel clearfix">
+					
+					<div class="panel-element-row">
+						<div id="singleDetectionDuration" class="dashboard-element single" style="width: 100%">
+							<div class="panel-head">
+								<h3>Detection</h3>
+							</div>
+							<div class="panel-body"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="panel2" class="dashboard-cell" style="width: 20%;">
+				<div class="dashboard-panel clearfix">
+					
+					<div class="panel-element-row">
+						<div id="singleContainmentDuration" class="dashboard-element single" style="width: 100%">
+							<div class="panel-head">
+								<h3>Containment</h3>
+							</div>
+							<div class="panel-body"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="panel3" class="dashboard-cell" style="width: 20%;">
+				<div class="dashboard-panel clearfix">
+					
+					<div class="panel-element-row">
+						<div id="singleMitigationDuration" class="dashboard-element single" style="width: 100%">
+							<div class="panel-head">
+								<h3>Mitigation</h3>
+							</div>
+							<div class="panel-body"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="panel4" class="dashboard-cell" style="width: 20%;">
+				<div class="dashboard-panel clearfix">
+					
+					<div class="panel-element-row">
+						<div id="singleRecoveryDuration" class="dashboard-element single" style="width: 100%">
+							<div class="panel-head">
+								<h3>Recovery</h3>
+							</div>
+							<div class="panel-body"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="panel5" class="dashboard-cell" style="width: 20%;">
+				<div class="dashboard-panel clearfix">
+					
+					<div class="panel-element-row">
+						<div id="singleIncidentDuration" class="dashboard-element single" style="width: 100%">
+							<div class="panel-head">
+								<h3>Incident</h3>
+							</div>
+							<div class="panel-body"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<ul class="nav nav-tabs" id="myTabs">
+	  <li class="active"><a class="tab-title-text" href="#detailsTab">Details</a></li>
+	  <li><a class="tab-title-text" href="#stageTab">Stage</a></li>
+	  <li><a class="tab-title-text" href="#categoryTab">Category</a></li>
+	  <li><a class="tab-title-text" href="#alertTab">Alert</a></li>
+	  <li><a class="tab-title-text" href="#networkTab">Network</a></li>
+	  <li><a class="tab-title-text" href="#userTab">User</a></li>
+	  <li><a class="tab-title-text" href="#webTab">Web</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="detailsTab">
+			<div id="row2" class="dashboard-row dashboard-row2">
+				<div id="panel6" class="dashboard-cell" style="width: 33.33%;">
+					<div class="dashboard-panel clearfix">
+						<div class="panel-element-row">
+							<div id="tableDetailsEvent" class="dashboard-element table" style="width: 100%">
+								<div class="panel-head">
+									<h3>Event Details</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="panel7" class="dashboard-cell" style="width: 33.33%;">
+					<div class="dashboard-panel clearfix">
+						
+						<div class="panel-element-row">
+							<div id="tableDetailsSystem" class="dashboard-element table" style="width: 100%">
+								<div class="panel-head">
+									<h3>System Details</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="panel8" class="dashboard-cell" style="width: 33.33%;">
+					<div class="dashboard-panel clearfix">
+						
+						<div class="panel-element-row">
+							<div id="tableDetailsUser" class="dashboard-element table" style="width: 100%">
+								<div class="panel-head">
+									<h3>User Details</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="stageTab">
+			<div id="row3" class="dashboard-row dashboard-row3">
+				<div class="fieldset">
+					<div class="input input-dropdown" id="inputIRStage">
+						<label>IR Stage</label>
+					</div>
+					<div class="input input-text" id="inputIRStageCompletion">
+						<label>Completion (YYYY-mm-dd HH:MM)</label>
+					</div>
+					<div class="input input-text" id="inputIRStageComment">
+						<label>Comment</label>
+					</div>
+					<div class="form-submit" id="stage_btn">
+						<button class="btn btn-primary Update">Update</button>
+					</div>
+				</div>
+			</div>
+			<div id="row4" class="dashboard-row dashboard-row4">
+				<div id="panel9" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						
+						<div class="panel-element-row">
+							<div id="tableStageTimestamps" class="dashboard-element single" style="width: 100%">
+								<div class="panel-head">
+									<h3>Stage Timestamps</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="categoryTab">
+			<div id="row4" class="dashboard-row dashboard-row4">
+				<div id="panel10" class="dashboard-cell" style="width: 33.33%;">
+					<div class="dashboard-panel clearfix">
+						<div class="panel-element-row">
+							<div id="tableCatGeneral" class="dashboard-element single" style="width: 100%">
+								<div class="panel-head">
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="panel11" class="dashboard-cell" style="width: 33.33%;">
+					<div class="dashboard-panel clearfix">
+						<div class="panel-element-row">
+							<div id="tableCatActionActor" class="dashboard-element single" style="width: 100%">
+								<div class="panel-head">
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="panel12" class="dashboard-cell" style="width: 33.33%;">
+					<div class="dashboard-panel clearfix">
+						<div class="panel-element-row">
+							<div id="tableCatAsset" class="dashboard-element single" style="width: 100%">
+								<div class="panel-head">
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="categoryRow1" class="dashboard-row dashboard-categoryRow1">
+				<div id="generalCell" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						<h2 id="title1" class="panel-title">General</h2>
+						<div class="fieldset">
+							<div class="input input-dropdown" id="inputDiscoveryMethod">
+								<label>Discovery Method</label>
+							</div>
+							<div class="input input-dropdown" id="inputConfidence">
+								<label>Confidence</label>
+							</div>
+							<div class="input input-dropdown" id="inputTargeted">
+								<label>Targeted</label>
+							</div>
+							<div class="input input-dropdown" id="inputImpactOverallRating">
+								<label>Overall Impact Rating</label>
+							</div>
+							<div class="input input-dropdown" id="inputImpactLossRating">
+								<label>Loss Rating</label>
+							</div>
+							<div class="input input-dropdown" id="inputImpactLossVariety">
+								<label>Loss Variety</label>
+							</div>
+							<div class="form-submit" id="category_general_btn" >
+								<button class="btn btn-primary submit">Update</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="categoryRow2" class="dashboard-row dashboard-categoryRow2">
+				<div id="actionCell" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						<h2 id="title1" class="panel-title">Action</h2>
+						<div class="fieldset">
+							<div class="input input-dropdown" id="inputAction">
+								<label>Action</label>
+							</div>
+							<div class="input input-dropdown" id="inputActionVector">
+								<label>Vector</label>
+							</div>
+							<div class="input input-dropdown" id="inputActionVariety">
+								<label>Variety</label>
+							</div>
+							<div class="form-submit" id="category_action_btn">
+								<button class="btn btn-primary submit">Update</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="categoryRow3" class="dashboard-row dashboard-categoryRow3">
+				<div id="actorCell" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						<h2 id="title1" class="panel-title">Actor</h2>
+						<div class="fieldset">
+							<div class="input input-dropdown" id="inputActor">
+								<label>Actor</label>
+							</div>
+							<div class="input input-dropdown" id="inputActorVariety">
+								<label>Variety</label>
+							</div>
+							<div class="input input-dropdown" id="inputActorMotive">
+								<label>Motive</label>
+							</div>
+							<div class="form-submit" id="category_actor_btn">
+								<button class="btn btn-primary submit">update</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="categoryRow4" class="dashboard-row dashboard-categoryRow4">
+				<div id="assetsCell" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						<h2 id="title1" class="panel-title">Assets</h2>
+						<div class="fieldset">
+							<div class="input input-dropdown" id="inputAssetGovernance">
+								<label>Governance</label>
+							</div>
+							<div class="input input-dropdown" id="inputAssetVariety">
+								<label>Variety</label>
+							</div>
+							<div class="form-submit" id="category_assets_btn">
+								<button class="btn btn-primary submit">Update</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="alertTab">
+			<div id="row5" class="dashboard-row dashboard-row5">
+				<div id="panel13" class="dashboard-cell" style="width: 100%">
+					<div class="dashboard-panel clearfix">
+						
+						<div class="panel-element-row">
+							<div id="chartAlertSguilOverTime" class="dashboard-element chart" style="width: 90% !important">
+								<div class="panel-head">
+									<h3>Sguil Alerts over Time</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="row6" class="dashboard-row dashboard-row6">
+				<div id="panel14" class="dashboard-cell">
+					<div class="dashboard-panel clearfix">
+						
+						<div class="panel-element-row">
+							<div id="chartAlertSguilSignatureCount" class="dashboard-element table" style="width: 40%">
+								<div class="panel-head">
+									<h3>Sguil Alerts</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="panelFortigateUTM" class="dashboard-cell">
+					<div class="dashboard-panel clearfix">
+						
+						<div class="panel-element-row">
+							<div id="chartAlertFortigateIPSAlerts" class="dashboard-element table" style="width: 60%">
+								<div class="panel-head">
+									<h3>Fortigate IPS Alerts</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="row61" class="dashboard-row dashboard-row6">
+				<div id="panel15" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						
+						<div class="panel-element-row">
+							<div id="chartAlertVirusTotal" class="dashboard-element table" style="width: 100%">
+								<div class="panel-head">
+									<h3>VirusTotal Hits</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="networkTab">
+			<div id="row7" class="dashboard-row dashboard-row7">
+				<div id="panel16" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						<div class="fieldset">
+							<div class="input input-dropdown" id="inputFlowStats">
+								<label>&nbsp;</label>
+							</div>
+						</div>
+						
+						<div class="panel-element-row">
+							<div id="chartNetworkFlowOverTime" class="dashboard-element chart" style="width: 100%">
+								<div class="panel-head">
+									<h3>Over Time</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="row8" class="dashboard-row dashboard-row8">
+				<div id="panel17" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						<h2 class="panel-title">DNS Queries</h2>
+						<div class="panel-element-row">
+							<div id="tableNetworkTopDNSQueries" class="dashboard-element table" style="width: 100%">
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="row9" class="dashboard-row dashboard-row9">
+				<div id="panel18" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						<h2 class="panel-title">IP Geolocation</h2>
+						<div class="fieldset">
+							<div class="input input-dropdown" id="inputMapSourceType">
+								<label>Sourcetype</label>
+							</div>
+							<div class="input input-dropdown" id="inputMapBy">
+								<label>By</label>
+							</div>
+							<div class="input input-radio" id="inputHideUS">
+								<label>United States</label>
+							</div>
+						</div>
+						
+						<div class="panel-element-row">
+							<div id="mapNetworkMapGeoIP" class="dashboard-element map" style="width: 100%">
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="userTab">
+			<div id="userRow1" class="dashboard-row dashboard-userRow1">
+				<div id="userPanel1" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">
+						<div class="panel-element-row">
+							<div id="tableUserIncidents" class="dashboard-element table" style="width: 100%">
+								<div class="panel-head">
+									<h3>All Incidents Involving User</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="webTab">
+			<div id="row10" class="dashboard-row dashboard-row10">
+				<div id="panel19" class="dashboard-cell" style="width: 100%;">
+					<div class="dashboard-panel clearfix">						
+						<div class="panel-element-row">
+							<div id="tableWebFortigateBlocks" class="dashboard-element table" style="width: 100%">
+								<div class="panel-head">
+									<h3>Fortigate Blocked Sites</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="row11" class="dashboard-row dashboard-row11">
+				<div id="panel20" class="dashboard-cell" style="width: 90%;">
+					<div class="dashboard-panel clearfix">
+						
+						<div class="panel-element-row">
+							<div id="chartWebFortigateTransferByHostname" class="dashboard-element chart" style="width: 100%">
+								<div class="panel-head">
+									<h3>Web Data Transfers/Sessions</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="row12" class="dashboard-row dashboard-row12">
+				<div id="panel21" class="dashboard-cell" style="width: 50%;">
+					<div class="dashboard-panel clearfix">
+						<h2 class="panel-title">Bro Files Mime Types</h2>
+						<div class="fieldset">
+							<div class="input input-multiselect" id="inputMimeTypeDropdown">
+								<label>Excluded Mime Types</label>
+							</div>
+						</div>
+						
+						<div class="panel-element-row">
+							<div id="chartWebTopMimeTypes" class="dashboard-element chart" style="width: 100%">
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="panel22" class="dashboard-cell" style="width: 50%;">
+					<div class="dashboard-panel clearfix">
+						<div class="panel-element-row">
+							<div id="chartWebTopUserAgents" class="dashboard-element table" style="width: 100%">
+								<div class="panel-head">
+									<h3>User Agents</h3>
+								</div>
+								<div class="panel-body"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer"></div>
+
+<!-- 
+END LAYOUT
+-->
+
+<script src="{{SPLUNKWEB_URL_PREFIX}}/config?autoload=1"></script>
+<script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/i18n.js"></script>
+<script src="{{SPLUNKWEB_URL_PREFIX}}/i18ncatalog?autoload=1"></script>
+<script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/build/simplexml.min/config.js"></script>
+<script type="text/javascript">
+require.config({
+	baseUrl: "{{SPLUNKWEB_URL_PREFIX}}/static/js",
+	waitSeconds: 0 // Disable require.js load timeout
+});
+
+//
+// LIBRARY REQUIREMENTS
+//
+// In the require function, we include the necessary libraries and modules for
+// the HTML dashboard. Then, we pass variable names for these libraries and
+// modules as function parameters, in order.
+// 
+// When you add libraries or modules, remember to retain this mapping order
+// between the library or module and its function parameter. You can do this by
+// adding to the end of these lists, as shown in the commented examples below.
+
+require([
+	"splunkjs/mvc",
+	"splunkjs/mvc/utils",
+	"splunkjs/mvc/tokenutils",
+	"underscore",
+	"jquery",
+	"splunkjs/mvc/simplexml",
+	"splunkjs/mvc/headerview",
+	"splunkjs/mvc/footerview",
+	"splunkjs/mvc/simplexml/dashboardview",
+	"splunkjs/mvc/simplexml/dashboard/panelref",
+	"splunkjs/mvc/simplexml/element/chart",
+	"splunkjs/mvc/simplexml/element/event",
+	"splunkjs/mvc/simplexml/element/html",
+	"splunkjs/mvc/simplexml/element/list",
+	"splunkjs/mvc/simplexml/element/map",
+	"splunkjs/mvc/simplexml/element/single",
+	"splunkjs/mvc/simplexml/element/table",
+	"splunkjs/mvc/simpleform/formutils",
+	"splunkjs/mvc/simplexml/eventhandler",
+	"splunkjs/mvc/simpleform/input/dropdown",
+	"splunkjs/mvc/simpleform/input/radiogroup",
+	"splunkjs/mvc/simpleform/input/multiselect",
+	"splunkjs/mvc/simpleform/input/checkboxgroup",
+	"splunkjs/mvc/simpleform/input/text",
+	"splunkjs/mvc/simpleform/input/timerange",
+	"splunkjs/mvc/simpleform/input/submit",
+	"splunkjs/mvc/searchmanager",
+	"splunkjs/mvc/savedsearchmanager",
+	"splunkjs/mvc/postprocessmanager",
+	"splunkjs/mvc/simplexml/urltokenmodel"
+	// Add comma-separated libraries and modules manually here, for example:
+	// ..."splunkjs/mvc/simplexml/urltokenmodel",
+	// "splunkjs/mvc/checkboxview"
+	],
+	function(
+		mvc,
+		utils,
+		TokenUtils,
+		_,
+		$,
+		DashboardController,
+		HeaderView,
+		FooterView,
+		Dashboard,
+		PanelRef,
+		ChartElement,
+		EventElement,
+		HtmlElement,
+		ListElement,
+		MapElement,
+		SingleElement,
+		TableElement,
+		FormUtils,
+		EventHandler,
+		DropdownInput,
+		RadioGroupInput,
+		MultiSelectInput,
+		CheckboxGroupInput,
+		TextInput,
+		TimeRangeInput,
+		SubmitButton,
+		SearchManager,
+		SavedSearchManager,
+		PostProcessManager,
+		UrlTokenModel
+
+		// Add comma-separated parameter names here, for example: 
+		// ...UrlTokenModel, 
+		// CheckboxView
+		) {
+
+
+
+		var pageLoading = true;
+
+
+		// 
+		// TOKENS
+		//
+		
+		// Create token namespaces
+		var urlTokenModel = new UrlTokenModel();
+		mvc.Components.registerInstance('url', urlTokenModel);
+		var defaultTokenModel = mvc.Components.getInstance('default', {create: true});
+		var submittedTokenModel = mvc.Components.getInstance('submitted', {create: true});
+
+		urlTokenModel.on('url:navigate', function() {
+			defaultTokenModel.set(urlTokenModel.toJSON());
+			if (!_.isEmpty(urlTokenModel.toJSON()) && !_.all(urlTokenModel.toJSON(), _.isUndefined)) {
+				submitTokens();
+			} else {
+				submittedTokenModel.clear();
+			}
+		});
+
+		// Initialize tokens
+		defaultTokenModel.set(urlTokenModel.toJSON());
+
+		function submitTokens() {
+			// Copy the contents of the defaultTokenModel to the submittedTokenModel and urlTokenModel
+			FormUtils.submitForm({ replaceState: pageLoading });
+		}
+
+		function setToken(name, value) {
+			defaultTokenModel.set(name, value);
+			submittedTokenModel.set(name, value);
+		}
+
+		function unsetToken(name) {
+			defaultTokenModel.unset(name);
+			submittedTokenModel.unset(name);
+		}
+
+		var nowUTC = new Date();
+		t = new Date(nowUTC + " UTC");
+		setToken("form.selStageTime", t.toJSON().substr(0,16).replace("T", " "));
+		
+		//
+		// SEARCH MANAGERS
+		//
+	
+		// Incident Stage Durations Base Search
+		var searchDurations = new SearchManager({
+			"id": "searchDurations",
+			"status_buckets": 0,
+			"search": "| inputlookup cirta_state_lookup | search  cirta_id=$selCirtaID$",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchDetectionDuration = new PostProcessManager({
+			"id": "searchDetectionDuration",
+			"managerid": "searchDurations",
+			"search": "| `detection_duration` | table detection_duration"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchContainmentDuration = new PostProcessManager({
+			"id": "searchContainmentDuration",
+			"managerid": "searchDurations",
+			"search": "| `containment_duration` | table containment_duration"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchMitigationDuration = new PostProcessManager({
+			"id": "searchMitigationDuration",
+			"managerid": "searchDurations",
+			"search": "| `mitigation_duration` | table mitigation_duration"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchRecoveryDuration = new PostProcessManager({
+			"id": "searchRecoveryDuration",
+			"managerid": "searchDurations",
+			"search": "| inputlookup cirta_state_lookup | search  cirta_id=$selCirtaID$ | `recovery_duration` | table recovery_duration"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchIncidentDuration = new PostProcessManager({
+			"id": "searchIncidentDuration",
+			"managerid": "searchDurations",
+			"search": "| inputlookup cirta_state_lookup | search  cirta_id=$selCirtaID$ | `incident_duration` | table incident_duration"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		//
+		// VIEWS: VISUALIZATION ELEMENTS
+		//
+
+		var singleDetectionDuration = new SingleElement({
+			"id": "singleDetectionDuration",
+			"linkView": "search",
+			"drilldown": "none",
+			"managerid": "searchDetectionDuration",
+			"el": $('#singleDetectionDuration')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var singleContainmentDuration = new SingleElement({
+			"id": "singleContainmentDuration",
+			"linkView": "search",
+			"drilldown": "none",
+			"managerid": "searchContainmentDuration",
+			"el": $('#singleContainmentDuration')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var singleMitigationDuration = new SingleElement({
+			"id": "singleMitigationDuration",
+			"linkView": "search",
+			"drilldown": "none",
+			"managerid": "searchMitigationDuration",
+			"el": $('#singleMitigationDuration')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var singleRecoveryDuration = new SingleElement({
+			"id": "singleRecoveryDuration",
+			"linkView": "search",
+			"drilldown": "none",
+			"managerid": "searchRecoveryDuration",
+			"el": $('#singleRecoveryDuration')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var singleIncidentDuration = new SingleElement({
+			"id": "singleIncidentDuration",
+			"linkView": "search",
+			"drilldown": "none",
+			"managerid": "searchIncidentDuration",
+			"el": $('#singleIncidentDuration')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		//
+		// VIEWS: FORM INPUTS
+		//
+		
+		var inputCirtaID = new TextInput({
+			"id": "inputCirtaID",
+			"value": "$form.selCirtaID$",
+			"el": $('#inputCirtaID')
+		}, {tokens: true}).render();
+
+		inputCirtaID.on("change", function(newValue) {
+			setToken('form.selCirtaID', inputCirtaID.val().trim());
+			FormUtils.handleValueChange(inputCirtaID);
+		});
+
+		
+		//*************************************************************************************
+		//                               Details Tab
+		//*************************************************************************************
+		
+		var searchesDetailsTab = new Array();
+		
+		//
+		// SEARCH MANAGERS
+		//
+		
+		// Incident Details Base Search
+		var searchAttrs = new SearchManager({
+			"id": "searchAttrs",
+			"status_buckets": 0,
+			"search": "index=cirta cirta_id=$selCirtaID$ level=STATE | head 1 | fields *",
+			"latest_time": "$latest$",
+			"earliest_time": "$earliest$",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesDetailsTab.push(searchAttrs);
+		
+		var searchDetailsEvent = new PostProcessManager({
+			"managerid": "searchAttrs",
+			"search": "| `event_details`",
+			"id": "searchDetailsEvent"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchDetailsSystem = new PostProcessManager({
+			"managerid": "searchAttrs",
+			"search": "| `system_details`",
+			"id": "searchDetailsSystem"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchDetailsUser = new PostProcessManager({
+			"managerid": "searchAttrs",
+			"search": "| `user_details`",
+			"id": "searchDetailsUser"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		//
+		// VIEWS: VISUALIZATION ELEMENTS
+		//
+		
+		var tableDetailsEvent = new TableElement({
+			"id": "tableDetailsEvent",
+			"count": 10,
+			"dataOverlayMode": "none",
+			"drilldown": "row",
+			"rowNumbers": "false",
+			"wrap": "true",
+			"managerid": "searchDetailsEvent",
+			"el": $('#tableDetailsEvent')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var tableDetailsSystem = new TableElement({
+			"id": "tableDetailsSystem",
+			"count": 10,
+			"dataOverlayMode": "none",
+			"drilldown": "row",
+			"rowNumbers": "false",
+			"wrap": "true",
+			"managerid": "searchDetailsSystem",
+			"el": $('#tableDetailsSystem')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var tableDetailsUser = new TableElement({
+			"id": "tableDetailsUser",
+			"count": 15,
+			"dataOverlayMode": "none",
+			"drilldown": "row",
+			"rowNumbers": "false",
+			"wrap": "true",
+			"managerid": "searchDetailsUser",
+			"el": $('#tableDetailsUser')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		//
+		// VIEWS: FORM INPUTS
+		//
+
+		//*************************************************************************************
+		//                               Stage Tab
+		//*************************************************************************************
+
+		//
+		// SEARCH MANAGERS
+		//
+		
+		var searchUpdateStage = new SearchManager({
+			"id": "searchUpdateStage",
+			"earliest_time": "0",
+			"latest_time": "now",
+			"autostart": false,
+			"search": "| inputlookup cirta_state_lookup | search cirta_id=\"$selCirtaID$\" | eval update_time = now() | eval $selIRStage$_time = strptime(\"$selStageTime$\", \"%Y-%m-%d %H:%M\") | eval mitigation_time = if(isnull(mitigation_time) AND isnotnull(recovery_time), recovery_time, mitigation_time) | eval containment_time = if(isnull(containment_time) AND isnotnull(mitigation_time), mitigation_time, containment_time) | eval detection_time = if(isnull(detection_time) AND isnotnull(containment_time), containment_time, detection_time) | eval ir_stage = if(isnotnull(detection_time), \"containment\", \"detection\") | eval ir_stage = if(isnotnull(containment_time), \"mitigation\", ir_stage) | eval ir_stage = if(isnotnull(mitigation_time), \"recovery\", ir_stage) | eval ir_stage = if(isnotnull(recovery_time), \"closed\", ir_stage) | eval $selIRStage$_note = \"$selStageComment$\" | fields _key update_time cirta_id triage_status ir_stage event_time detection_time detection_note containment_time containment_note mitigation_time mitigation_note recovery_time recovery_note | outputlookup cirta_state_lookup append=true",
+			"status_buckets": 0,
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		searchUpdateStage.on("search:done", function(newValue) {
+			searchDurations.startSearch();
+			searchStageTimestamps.startSearch();
+			//searchDetectionDuration.startSearch();
+			//searchContainmentDuration.startSearch();
+			//searchMitigationDuration.startSearch();
+			//searchRecoveryDuration.startSearch();
+			//searchIncidentDuration.startSearch();
+		});
+		
+		var searchStageTimestamps = new SearchManager({
+			"id": "searchStageTimestamps",
+			"earliest_time": "0",
+			"latest_time": "now",
+			"search": "| inputlookup cirta_state_lookup | search cirta_id=\"$selCirtaID$\" | eval update_time = strftime(update_time, \"%b %d,  %Y %H:%M:%S\") | eval event_time = strftime(event_time, \"%b %d,  %Y %H:%M:%S\") | eval recovery_time = if(isnotnull(recovery_time), strftime(recovery_time, \"%b %d,  %Y %H:%M:%S\"), \"\") | eval mitigation_time = if(isnotnull(mitigation_time), strftime(mitigation_time, \"%b %d,  %Y %H:%M:%S\"), \"\") | eval containment_time = if(isnotnull(containment_time), strftime(containment_time, \"%b %d,  %Y %H:%M:%S\"), \"\") | eval detection_time = if(isnotnull(detection_time), strftime(detection_time, \"%b %d,  %Y %H:%M:%S\"), \"\") | fields update_time event_time detection_time containment_time mitigation_time recovery_time",
+			"status_buckets": 0,
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var elementUpdateStage = new SingleElement({
+			"id": "elementUpdateStage",
+			"linkView": "search",
+			"drilldown": "none",
+			"managerid": "searchUpdateStage",
+			"el": $('#elementUpdateStage')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var tableStageTimestamps = new TableElement({
+			"id": "tableStageTimestamps",
+			"drilldown": "row",
+			"rowNumbers": "undefined",
+			"wrap": "undefined",
+			"managerid": "searchStageTimestamps",
+			"el": $('#tableStageTimestamps')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		
+		//
+		// VIEWS: FORM INPUTS
+		//
+		
+		var inputIRStage = new DropdownInput({
+			"id": "inputIRStage",
+			"choices": [
+				{"value": "detection", "label": "Detection"},
+				{"value": "containment", "label": "Containment"},
+				{"value": "mitigation", "label": "Mitigation"},
+				{"value": "recovery", "label": "Recovery"}
+			],
+			"default": "containment",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selIRStage$",
+			"el": $('#inputIRStage')
+		}, {tokens: true}).render();
+
+		inputIRStage.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputIRStage);
+		});
+		
+		var inputIRStageCompletion = new TextInput({
+			"id": "inputIRStageCompletion",
+			"searchWhenChanged": false,
+			"value": "$form.selStageTime$",
+			"el": $('#inputIRStageCompletion')
+		}, {tokens: true}).render();
+
+		inputIRStageCompletion.on("change", function(newValue) {
+			setToken('form.selStageTime', inputIRStageCompletion.val().trim());
+			FormUtils.handleValueChange(inputIRStageCompletion);
+		});
+		
+		var inputIRStageComment = new TextInput({
+			"id": "inputIRStageComment",
+			"default": " ",
+			"searchWhenChanged": false,
+			"value": "$form.selStageComment$",
+			"el": $('#inputIRStageComment')
+		}, {tokens: true}).render();
+
+		inputIRStageComment.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputIRStageComment);
+		});
+		
+		// 
+		// SUBMIT FORM DATA
+		//
+		
+		var submitStage = new SubmitButton({
+			id: 'submitStage',
+			text: 'Update',
+			el: $('#stage_btn')
+		}, {tokens: true}).render();
+
+		submitStage.on("submit", function() {
+			if(!inputIRStageComment.val()){
+				setToken('form.selStageComment', ' ');
+				alert('here?');
+			}
+			if(inputIRStageCompletion.val().match(
+				/\d{4}-[01]\d-[0-3]\d [0-2]\d:[0-5]\d$/
+			)) {
+				submitTokens();
+				searchUpdateStage.startSearch();
+			}else{
+				alert('Stage time format error. Cannot update until corrected.');
+			}
+			
+			//submitTokens();
+		});
+		
+		//*************************************************************************************
+		//                               Category Tab
+		//*************************************************************************************
+
+		//
+		// SEARCH MANAGERS
+		//
+		
+		var searchCategoryGeneral = new SearchManager({
+			"id": "searchCategoryGeneral",
+			"status_buckets": 0,
+			"search": "index=* | head 1 | eval cirta_id=\"$selCirtaID$\" | lookup cirta_category_lookup cirta_id | eval _key = \"$selCirtaID$\" | eval update_time = now() | eval discovery_method = \"$form.selDiscoveryMethod$\" | eval confidence = \"$form.selConfidence$\" | eval targeted = \"$form.selTargeted$\" | eval impact_overall_rating = \"$form.selImpactOverallRating$\" | eval impact_loss_rating = \"$form.selImpactLossRating$\" | eval impact_loss_variety = \"$form.selImpactLossVariety$\" | eval msg=\"Updated\" | fields _key update_time cirta_id discovery_method confidence targeted impact_overall_rating impact_loss_rating impact_loss_variety action action_vector action_variety actor actor_variety actor_motive asset_governance asset_variety msg | outputlookup cirta_category_lookup append=true",
+			"autostart": false,
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchCategoryAction = new SearchManager({
+			"id": "searchCategoryAction",
+			"status_buckets": 0,
+			"search": "index=* | head 1 | eval cirta_id=\"$selCirtaID$\" | lookup cirta_category_lookup cirta_id  | eval _key = \"$selCirtaID$\" | eval action = \"$form.selAction$\" | eval action_vector = \"$form.selActionVector$\" | eval action_variety = \"$form.selActionVariety$\" | eval msg=\"Updated\" | fields _key update_time cirta_id discovery_method confidence targeted impact_overall_rating impact_loss_rating impact_loss_variety action action_vector action_variety actor actor_variety actor_motive asset_governance asset_variety msg | outputlookup cirta_category_lookup append=true",
+			"autostart": false,
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchCategoryActor = new SearchManager({
+			"id": "searchCategoryActor",
+			"status_buckets": 0,
+			"search": "index=* | head 1 | eval cirta_id=\"$selCirtaID$\" | lookup cirta_category_lookup cirta_id  | eval _key = \"$selCirtaID$\" | eval actor = \"$form.selActor$\" | eval actor_variety = \"$form.selActorVariety$\" | eval actor_motive = \"$form.selActorMotive$\" | eval msg=\"Updated\" | fields _key update_time cirta_id discovery_method confidence targeted impact_overall_rating impact_loss_rating impact_loss_variety action action_vector action_variety actor actor_variety actor_motive asset_governance asset_variety msg | outputlookup cirta_category_lookup append=true",
+			"autostart": false,
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchCategoryAssets = new SearchManager({
+			"id": "searchCategoryAssets",
+			"status_buckets": 0,
+			"search": "index=* | head 1 | eval cirta_id=\"$selCirtaID$\" | lookup cirta_category_lookup cirta_id  | eval _key = \"$selCirtaID$\" | eval asset_governance = \"$form.selAssetGovernance$\" | eval asset_variety = \"$form.selAssetVariety$\" | eval msg=\"Updated\" | fields _key update_time cirta_id discovery_method confidence targeted impact_overall_rating impact_loss_rating impact_loss_variety action action_vector action_variety actor actor_variety actor_motive asset_governance asset_variety msg | outputlookup cirta_category_lookup append=true",
+			"autostart": false,
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchCategories = new SearchManager({
+			"id": "searchCategories",
+			"status_buckets": 0,
+			"search": "| inputlookup categories | fields level1 level2 level3 choices",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchCategory = new SearchManager({
+			"id": "searchCategory",
+			"status_buckets": 0,
+			"search": "| inputlookup cirta_category_lookup | search cirta_id=\"$selCirtaID$\" ",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchCatGeneral = new PostProcessManager({
+			"id": "searchCatGeneral",
+			"managerid": "searchCategory",
+			"search": "| table discovery_method confidence targeted impact_overall_rating impact_loss_rating impact_loss_variety | rename discovery_method AS \"Discovery Method\" confidence AS Confidence targeted AS Targeted impact_overall_rating AS \"Overall Impact Rating\" impact_loss_rating AS \"Impact Loss Rating\" impact_loss_variety AS \"Loss Variety\" | transpose | rename column AS \"Category\" \"row 1\" AS Value"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchCatActionActor = new PostProcessManager({
+			"id": "searchCatActionActor",
+			"managerid": "searchCategory",
+			"search": "| table action action_vector action_variety actor actor_variety actor_motive  | rename action AS \"Action\" action_vector AS \"Action Vector\" action_variety AS \"Action Variety\" actor AS \"Actor\" actor_variety AS \"Actor Variety\" actor_motive AS \"Actor Motive\" | transpose | rename column AS \"Category\" \"row 1\" AS Value"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchCatAsset = new PostProcessManager({
+			"id": "searchCatAsset",
+			"managerid": "searchCategory",
+			"search": "| table asset_governance asset_variety | rename asset_governance AS \"Asset Governance\" asset_variety AS \"Asset Variety\" | transpose | rename column AS \"Category\" \"row 1\" AS Value"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchDiscoveryMethod = new PostProcessManager({
+			"id": "searchDiscoveryMethod",
+			"managerid": "searchCategories",
+			"search": "| search level1=discovery_method | sort choices | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchConfidence = new PostProcessManager({
+			"id": "searchConfidence",
+			"managerid": "searchCategories",
+			"search": "| search level1=confidence | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchTargeted = new PostProcessManager({
+			"id": "searchTargeted",
+			"managerid": "searchCategories",
+			"search": "| search level1=targeted | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchImpactOverallRating = new PostProcessManager({
+			"id": "searchImpactOverallRating",
+			"managerid": "searchCategories",
+			"search": "| search level1=impact level2=overall_rating | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchImpactLossRating = new PostProcessManager({
+			"id": "searchImpactLossRating",
+			"managerid": "searchCategories",
+			"search": "| search level1=impact level2=loss level3=rating | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchImpactLossVariety = new PostProcessManager({
+			"id": "searchImpactLossVariety",
+			"managerid": "searchCategories",
+			"search": "| search level1=impact level2=loss level3=variety | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchAction = new PostProcessManager({
+			"id": "searchAction",
+			"managerid": "searchCategories",
+			"search": "| search level1=action | sort level2 | stats c by level2 | fields level2"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchActionVector = new PostProcessManager({
+			"id": "searchActionVector",
+			"managerid": "searchCategories",
+			"search": "| search level1=action level2=$selAction$ level3=vector | sort choices | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchActionVariety = new PostProcessManager({
+			"id": "searchActionVariety",
+			"managerid": "searchCategories",
+			"search": "| search level1=action level2=$selAction$ level3=variety | sort choices | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchActorMotive = new PostProcessManager({
+			"id": "searchActorMotive",
+			"managerid": "searchCategories",
+			"search": "| search level1=actor level2=motive | sort choices | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchActor = new PostProcessManager({
+			"id": "searchActor",
+			"managerid": "searchCategories",
+			"search": "| search level1=actor level2!=motive | sort level2 | stats c by level2 | fields level2"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchActorVariety = new PostProcessManager({
+			"id": "searchActorVariety",
+			"managerid": "searchCategories",
+			"search": "| search level1=actor level2=$selActor$ level3=variety | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		var searchAssetGovernance = new PostProcessManager({
+			"id": "searchAssetGovernance",
+			"managerid": "searchCategories",
+			"search": "| search level1=asset level2=governance | sort choices | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchAssetVariety = new PostProcessManager({
+			"id": "searchAssetVariety",
+			"managerid": "searchCategories",
+			"search": "| search level1=asset level2=variety | sort choices | fields choices"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		//
+		// VIEWS: VISUALIZATION ELEMENTS
+		//
+		
+		
+		var tableCatGeneral = new TableElement({
+			"id": "tableCatGeneral",
+			"drilldown": "none",
+			"rowNumbers": "false",
+			<!-- "displayRowNumbers": false, -->
+			"wrap": "undefined",
+			"managerid": "searchCatGeneral",
+			"el": $('#tableCatGeneral')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var tableCatActionActor = new TableElement({
+			"id": "tableCatActionActor",
+			"drilldown": "none",
+			"rowNumbers": "false",
+			<!-- "displayRowNumbers": false, -->
+			"wrap": "undefined",
+			"managerid": "searchCatActionActor",
+			"el": $('#tableCatActionActor')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var tableCatAsset = new TableElement({
+			"id": "tableCatAsset",
+			"drilldown": "none",
+			"rowNumbers": "false",
+			<!-- "displayRowNumbers": false, -->
+			"wrap": "undefined",
+			"managerid": "searchCatAsset",
+			"el": $('#tableCatAsset')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		//
+		// VIEWS: FORM INPUTS
+		//
+		var inputDiscoveryMethod = new DropdownInput({
+			"id": "inputDiscoveryMethod",
+			"managerid": "searchDiscoveryMethod",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selDiscoveryMethod$",
+			"el": $('#inputDiscoveryMethod')
+		}, {tokens: true}).render();
+
+		inputDiscoveryMethod.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputDiscoveryMethod);
+		});
+
+		
+		var inputConfidence = new DropdownInput({
+			"id": "inputConfidence",
+			"managerid": "searchConfidence",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selConfidence$",
+			"el": $('#inputConfidence')
+		}, {tokens: true}).render();
+		
+		inputConfidence.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputConfidence);
+		});
+		
+		var inputTargeted = new DropdownInput({
+			"id": "inputTargeted",
+			"managerid": "searchTargeted",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selTargeted$",
+			"el": $('#inputTargeted')
+		}, {tokens: true}).render();
+		
+		inputTargeted.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputTargeted);
+		});
+		
+		var inputImpactOverallRating = new DropdownInput({
+			"id": "inputImpactOverallRating",
+			"managerid": "searchImpactOverallRating",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selImpactOverallRating$",
+			"el": $('#inputImpactOverallRating')
+		}, {tokens: true}).render();
+		
+		inputImpactOverallRating.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputImpactOverallRating);
+		});
+		
+		
+		var inputImpactLossRating = new DropdownInput({
+			"id": "inputImpactLossRating",
+			"managerid": "searchImpactLossRating",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selImpactLossRating$",
+			"el": $('#inputImpactLossRating')
+		}, {tokens: true}).render();
+		
+		inputImpactLossRating.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputImpactLossRating);
+		});
+		
+		var inputImpactLossVariety = new DropdownInput({
+			"id": "inputImpactLossVariety",
+			"managerid": "searchImpactLossVariety",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selImpactLossVariety$",
+			"el": $('#inputImpactLossVariety')
+		}, {tokens: true}).render();
+		
+		inputImpactLossVariety.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputImpactLossVariety);
+		});
+		
+		var singleCategoryGeneral = new SingleElement({
+			"id": "singleCategoryGeneral",
+			"linkView": "search",
+			"drilldown": "none",
+			"field": "msg",
+			"managerid": "searchCategoryGeneral",
+			"el": $('#singleCategoryGeneral')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+
+		var singleCategoryAction = new SingleElement({
+			"id": "singleCategoryAction",
+			"linkView": "search",
+			"drilldown": "none",
+			"field": "msg",
+			"managerid": "searchCategoryAction",
+			"el": $('#singleCategoryAction')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var singleCategoryActor = new SingleElement({
+			"id": "singleCategoryActor",
+			"linkView": "search",
+			"drilldown": "none",
+			"field": "msg",
+			"managerid": "searchCategoryActor",
+			"el": $('#singleCategoryActor')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var singleCategoryAssets = new SingleElement({
+			"id": "singleCategoryAssets",
+			"linkView": "search",
+			"drilldown": "none",
+			"field": "msg",
+			"managerid": "searchCategoryAssets",
+			"el": $('#singleCategoryAssets')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var inputAction = new DropdownInput({
+			"id": "inputAction",
+			"managerid": "searchAction",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "level2",
+			"valueField": "level2",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selAction$",
+			"el": $('#inputAction')
+		}, {tokens: true}).render();
+		
+		inputAction.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputAction);
+			setToken("selAction", inputAction.val());
+		});
+
+		var inputActionVector = new DropdownInput({
+			"id": "inputActionVector",
+			"managerid": "searchActionVector",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selActionVector$",
+			"el": $('#inputActionVector')
+		}, {tokens: true}).render();
+		
+		inputActionVector.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputActionVector);
+		});
+		
+		var inputActionVariety = new DropdownInput({
+			"id": "inputActionVariety",
+			"managerid": "searchActionVariety",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selActionVariety$",
+			"el": $('#inputActionVariety')
+		}, {tokens: true}).render();
+		
+		inputActionVariety.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputActionVariety);
+		});
+
+		var inputActorMotive = new DropdownInput({
+			"id": "inputActorMotive",
+			"managerid": "searchActorMotive",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selActorMotive$",
+			"el": $('#inputActorMotive')
+		}, {tokens: true}).render();
+		
+		inputActorMotive.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputActorMotive);
+		});
+		
+		var inputActor = new DropdownInput({
+			"id": "inputActor",
+			"managerid": "searchActor",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "level2",
+			"valueField": "level2",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selActor$",
+			"el": $('#inputActor')
+		}, {tokens: true}).render();
+		
+		inputActor.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputActor);
+			setToken("selActor", inputActor.val());
+		});
+		
+		var inputActorVariety = new DropdownInput({
+			"id": "inputActorVariety",
+			"managerid": "searchActorVariety",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selActorVariety$",
+			"el": $('#inputActorVariety')
+		}, {tokens: true}).render();
+		
+		inputActorVariety.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputActorVariety);
+		});
+		
+		var inputAssetGovernance = new DropdownInput({
+			"id": "inputAssetGovernance",
+			"managerid": "searchAssetGovernance",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selAssetGovernance$",
+			"el": $('#inputAssetGovernance')
+		}, {tokens: true}).render();
+		
+		inputAssetGovernance.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputAssetGovernance);
+		});
+		
+		var inputAssetVariety = new DropdownInput({
+			"id": "inputAssetVariety",
+			"managerid": "searchAssetVariety",
+			"choices": [
+				{"value": "-", "label": "-"},
+			],
+			"default": "-",
+			"labelField": "choices",
+			"valueField": "choices",
+			"searchWhenChanged": false,
+			"selectFirstChoice": false,
+			"showClearButton": true,
+			"value": "$form.selAssetVariety$",
+			"el": $('#inputAssetVariety')
+		}, {tokens: true}).render();
+		
+		inputAssetVariety.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputAssetVariety);
+		});
+		
+		// 
+		// SUBMIT FORM DATA
+		//
+		
+		var submitCategoryGeneral = new SubmitButton({
+			id: 'submitCategoryGeneral',
+			text: 'Update',
+			el: $('#category_general_btn')
+		}, {tokens: true}).render();
+
+		submitCategoryGeneral.on("submit", function() {
+			submitTokens();
+			searchCategoryGeneral.startSearch();
+		});
+
+		searchCategoryGeneral.on("search:done", function(newValue) {
+			searchCategory.startSearch();
+		});
+		
+		
+		var submitCategoryAction = new SubmitButton({
+			id: 'submitCategoryAction',
+			text: 'Update',
+			el: $('#category_action_btn')
+		}, {tokens: true}).render();
+
+		submitCategoryAction.on("submit", function() {
+			submitTokens();
+			searchCategoryAction.startSearch();
+		});
+		
+		searchCategoryAction.on("search:done", function(newValue) {
+			searchCategory.startSearch();
+		});
+
+		var submitCategoryActor = new SubmitButton({
+			id: 'submitCategoryActor',
+			text: 'Update',
+			el: $('#category_actor_btn')
+		}, {tokens: true}).render();
+
+		submitCategoryActor.on("submit", function() {
+			submitTokens();
+			searchCategoryActor.startSearch();
+		});
+		
+		searchCategoryActor.on("search:done", function(newValue) {
+			searchCategory.startSearch();
+		});
+		
+		var submitCategoryAssets = new SubmitButton({
+			id: 'submitCategoryAssets',
+			text: 'Update',
+			el: $('#category_assets_btn')
+		}, {tokens: true}).render();
+
+		submitCategoryAssets.on("submit", function() {
+			submitTokens();
+			searchCategoryAssets.startSearch();
+		});
+
+		searchCategoryAssets.on("search:done", function(newValue) {
+			searchCategory.startSearch();
+		});
+		
+		//*************************************************************************************
+		//                               Alert Tab
+		//*************************************************************************************
+
+		var searchesAlertTab = new Array();
+
+		//
+		// SEARCH MANAGERS
+		//
+		
+		var searchSguilEvents = new SearchManager({
+			"id": "searchSguilEvents",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" sourcetype=sguil_events | fields priority signature",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesAlertTab.push(searchSguilEvents);
+		
+		var searchAlertSguilOverTime = new PostProcessManager({
+			"id": "searchAlertSguilOverTime",
+			"managerid": "searchSguilEvents",
+			"search": "| where priority < 5 | timechart count by signature"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		var searchAlertSguilSignatureCount = new PostProcessManager({
+			"id": "searchAlertSguilSignatureCount",
+			"managerid": "searchSguilEvents",
+			"search": "| stats count by signature priority | sort priority -count"
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+		
+		var searchAlertFortigateIPSAlerts = new SearchManager({
+			"id": "searchAlertFortigateIPSAlerts",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" sourcetype=fortigate type=utm subtype=ips | eval src = srcip.\":\".srcport | eval dst = dstip.\":\".dstport | table _time src dst severity status attackname",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+
+
+		var searchAlertVirusTotal = new SearchManager({
+			"id": "searchAlertVirusTotal",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" sourcetype=virustotal_url positives!=0 | rename positives AS hits | table _time hits total url",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesAlertTab.push(searchAlertVirusTotal);
+		
+		//
+		// VIEWS: VISUALIZATION ELEMENTS
+		//
+
+		var chartAlertSguilOverTime = new ChartElement({
+			"id": "chartAlertSguilOverTime",
+			"charting.axisY2.enabled": "false",
+			"charting.axisTitleX.visibility": "visible",
+			"charting.chart.bubbleMinimumSize": "10",
+			"charting.axisX.scale": "linear",
+			"charting.legend.placement": "bottom",
+			"charting.chart.bubbleMaximumSize": "50",
+			"charting.chart.nullValueMode": "gaps",
+			"charting.layout.splitSeries": "0",
+			"charting.chart.stackMode": "stacked",
+			"charting.drilldown": "all",
+			"charting.chart.sliceCollapsingThreshold": "0.01",
+			"charting.axisTitleY.visibility": "visible",
+			"charting.chart": "line",
+			"charting.axisY.scale": "linear",
+			"charting.axisTitleY2.visibility": "visible",
+			"resizable": true,
+			"charting.chart.bubbleSizeBy": "area",
+			"charting.axisLabelsX.majorLabelStyle.overflowMode": "ellipsisNone",
+			"charting.axisLabelsX.majorLabelStyle.rotation": "0",
+			"charting.chart.style": "shiny",
+			"charting.axisY2.scale": "inherit",
+			"charting.legend.labelStyle.overflowMode": "ellipsisEnd",
+			"managerid": "searchAlertSguilOverTime",
+			"el": $('#chartAlertSguilOverTime')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var chartAlertSguilSignatureCount = new TableElement({
+			"id": "chartAlertSguilSignatureCount",
+			"count": 10,
+			"dataOverlayMode": "none",
+			"drilldown": "cell",
+			"rowNumbers": "false",
+			"wrap": "true",
+			"managerid": "searchAlertSguilSignatureCount",
+			"el": $('#chartAlertSguilSignatureCount')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		
+		var chartAlertFortigateIPSAlerts = new TableElement({
+			"id": "chartAlertFortigateIPSAlerts",
+			"count": 10,
+			"dataOverlayMode": "none",
+			"drilldown": "cell",
+			"rowNumbers": "false",
+			"wrap": "true",
+			"managerid": "searchAlertFortigateIPSAlerts",
+			"el": $('#chartAlertFortigateIPSAlerts')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+
+		var chartAlertVirusTotal = new TableElement({
+			"id": "chartAlertVirusTotal",
+			"count": 10,
+			"dataOverlayMode": "none",
+			"drilldown": "cell",
+			"rowNumbers": "false",
+			"wrap": "true",
+			"managerid": "searchAlertVirusTotal",
+			"el": $('#chartAlertVirusTotal')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		
+		//
+		// VIEWS: FORM INPUTS
+		//
+		
+		//*************************************************************************************
+		//                               User Tab
+		//*************************************************************************************
+
+		var searchesUserTab = new Array();
+
+		//
+		// SEARCH MANAGERS
+		//
+		
+		var searchUserLocalAdmin = new SearchManager({
+			"id": "searchUserLocalAdmin",
+			"search": "index=cirta sourcetype=cirta cirta_id=\"$selCirtaID$\" level=state | head 1 | fields local_admin",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesUserTab.push(searchUserLocalAdmin);
+		
+		var searchUserIncidents = new SearchManager({
+			"id": "searchUserIncidents",
+			"search": "index=cirta level=STATE [search index=cirta level=STATE cirta_id=\"$selCirtaID$\" | head 1 | fields username] | dedup cirta_id | lookup cirta_state_lookup cirta_id OUTPUT triage_status | search triage_status=acknowledged username!=\"None\" | table _time cirta_id username full_name department local_admin hostname description",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesUserTab.push(searchUserIncidents);
+		
+		//
+		// VIEWS: VISUALIZATION ELEMENTS
+		//
+		
+		/*
+		 var singleUserLocalAdmin = new SingleElement({
+			"id": "singleUserLocalAdmin",
+			"linkView": "search",
+			"drilldown": "none",
+			"field": "local_admin",
+			"managerid": "searchUserLocalAdmin",
+			"el": $('#singleUserLocalAdmin')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		*/
+		
+		var tableUserIncidents = new TableElement({
+			"id": "tableUserIncidents",
+			"drilldown": "row",
+			"rowNumbers": "undefined",
+			"wrap": "undefined",
+			"managerid": "searchUserIncidents",
+			"el": $('#tableUserIncidents')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+
+		//
+		// VIEWS: FORM INPUTS
+		//
+		
+		//*************************************************************************************
+		//                               Network Tab
+		//*************************************************************************************
+
+		var searchesNetworkTab = new Array();
+
+		//
+		// SEARCH MANAGERS
+		//
+		
+		var searchNetworkFlowOverTime = new SearchManager({
+			"id": "searchNetworkFlowOverTime",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" $selFlowStatsOverTimeBy$",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesNetworkTab.push(searchNetworkFlowOverTime);
+		
+		var searchNetworkMapGeoIP = new SearchManager({
+			"id": "searchNetworkMapGeoIP",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=$selCirtaID$ sourcetype=$mapSourceType$ | eval ip = coalesce(id_resp_h, dstip) | eval port = coalesce(id_resp_p, dstport) | iplocation ip | search Country!=\"$hideUS$\" | geostats latfield=lat longfield=lon count by $selMapBy$",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesNetworkTab.push(searchNetworkMapGeoIP);
+
+		var searchNetworkTopDNSQueries = new SearchManager({
+			"id": "searchNetworkTopDNSQueries",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" sourcetype=bro_dns | top query",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesNetworkTab.push(searchNetworkTopDNSQueries);
+		
+		//
+		// VIEWS: VISUALIZATION ELEMENTS
+		//
+		
+		var chartNetworkFlowOverTime = new ChartElement({
+			"id": "chartNetworkFlowOverTime",
+			"charting.axisY2.enabled": "false",
+			"charting.axisTitleX.visibility": "collapsed",
+			"charting.chart.bubbleMinimumSize": "10",
+			"charting.axisX.scale": "linear",
+			"charting.legend.placement": "bottom",
+			"charting.chart.bubbleMaximumSize": "50",
+			"charting.chart.nullValueMode": "zero",
+			"charting.layout.splitSeries": "0",
+			"charting.chart.stackMode": "default",
+			"charting.drilldown": "all",
+			"charting.chart.sliceCollapsingThreshold": "0.01",
+			"charting.axisTitleY.visibility": "visible",
+			"charting.chart": "line",
+			"charting.axisY.scale": "linear",
+			"charting.axisTitleY2.visibility": "visible",
+			"resizable": true,
+			"charting.chart.bubbleSizeBy": "area",
+			"charting.axisLabelsX.majorLabelStyle.overflowMode": "ellipsisNone",
+			"charting.axisLabelsX.majorLabelStyle.rotation": "0",
+			"charting.chart.style": "shiny",
+			"charting.axisY2.scale": "inherit",
+			"charting.legend.labelStyle.overflowMode": "ellipsisEnd",
+			"managerid": "searchNetworkFlowOverTime",
+			"el": $('#chartNetworkFlowOverTime')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var mapNetworkMapGeoIP = new MapElement({
+			"id": "mapNetworkMapGeoIP",
+			"mapping.markerLayer.markerOpacity": "0.8",
+			"drilldown": "all",
+			"resizable": true,
+			"mapping.data.maxClusters": "100",
+			"mapping.map.zoom": "2",
+			"mapping.drilldown": "all",
+			"mapping.map.center": "(0,0)",
+			"mapping.tileLayer.maxZoom": "7",
+			"mapping.tileLayer.minZoom": "0",
+			"mapping.markerLayer.markerMinSize": "10",
+			"mapping.markerLayer.markerMaxSize": "50",
+			"managerid": "searchNetworkMapGeoIP",
+			"el": $('#mapNetworkMapGeoIP')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var tableNetworkTopDNSQueries = new TableElement({
+			"id": "tableNetworkTopDNSQueries",
+			"drilldown": "row",
+			"rowNumbers": "undefined",
+			"wrap": "undefined",
+			"managerid": "searchNetworkTopDNSQueries",
+			"el": $('#tableNetworkTopDNSQueries')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+
+
+		//
+		// VIEWS: FORM INPUTS
+		//        
+
+		var inputMapSourceType = new DropdownInput({
+			"id": "inputMapSourceType",
+			"choices": [
+				{"value": "fortigate", "label": "Fortigate"},
+				{"value": "bro_http", "label": "Bro HTTP"},
+				{"value": "bro_conn", "label": "Bro Conn"}
+			],
+			"selectFirstChoice": false,
+			"searchWhenChanged": true,
+			"default": "fortigate",
+			"showClearButton": true,
+			"value": "$form.mapSourceType$",
+			"el": $('#inputMapSourceType')
+		}, {tokens: true}).render();
+
+		inputMapSourceType.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputMapSourceType);
+		});
+	
+		var inputMapBy = new DropdownInput({
+			"id": "inputMapBy",
+			"choices": [
+				{"value": "hostname", "label": "Hostname"},
+				{"value": "port", "label": "Destination Port"}
+			],
+			"selectFirstChoice": false,
+			"searchWhenChanged": true,
+			"default": "hostname",
+			"showClearButton": true,
+			"value": "$form.selMapBy$",
+			"el": $('#inputMapBy')
+		}, {tokens: true}).render();
+
+		inputMapBy.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputMapBy);
+		});
+
+		var inputHideUS = new RadioGroupInput({
+			"id": "inputHideUS",
+			"choices": [
+				{"value": "United States", "label": "Hide"},
+				{"value": "Bla", "label": "Unhide"}
+			],
+			"selectFirstChoice": false,
+			"searchWhenChanged": true,
+			"default": "United States",
+			"value": "$form.hideUS$",
+			"el": $('#inputHideUS')
+		}, {tokens: true}).render();
+
+		inputHideUS.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputHideUS);
+		});
+		
+		var inputFlowStats = new DropdownInput({
+			"id": "inputFlowStats",
+			"choices": [
+				{"value": "sourcetype=bro_conn | timechart sum(resp_pkts) by id_resp_p", "label": "Packets by Resp Port"},
+				{"value": "sourcetype=bro_conn | timechart sum(resp_bytes) by id_resp_p", "label": "Size by Resp Port"},
+				{"value": "sourcetype=bro_http | timechart count by user_agent", "label": "User Agent Usage"},
+				{"value": "sourcetype=sguil_flow | timechart sum(dst_pkts) by dst_port", "label": "Flow Packets by Resp Port"},
+				{"value": "sourcetype=sguil_flow | timechart sum(dst_bytes) by dst_port", "label": "Flow Size by Resp Port"}
+			],
+			"selectFirstChoice": false,
+			"searchWhenChanged": true,
+			"default": "sourcetype=bro_conn | timechart sum(resp_pkts) by id_resp_p",
+			"showClearButton": true,
+			"value": "$form.selFlowStatsOverTimeBy$",
+			"el": $('#inputFlowStats')
+		}, {tokens: true}).render();
+
+		inputFlowStats.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputFlowStats);
+		});
+		
+		//*************************************************************************************
+		//                               Web Tab
+		//*************************************************************************************
+
+		var searchesWebTab = new Array();
+		
+		//
+		// SEARCH MANAGERS
+		//
+		
+		var searchWebFortigateBlocks = new SearchManager({
+			"id": "searchWebFortigateBlocks",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" sourcetype=fortigate status=blocked NOT [|inputlookup fg_suppress | rename ip AS dstip]  | table _time status catdesc hostname url | sort _time",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesWebTab.push(searchWebFortigateBlocks);
+
+		var searchWebFortigateTransferByHostname = new SearchManager({
+			"id": "searchWebFortigateTransferByHostname",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" sourcetype=fortigate hostname| stats sum(sentbyte) AS sent_bytes sum(rcvdbyte) AS rcvd_bytes sum(duration) AS duration by hostname | eval sent_mb = sent_bytes/1024/1024 | eval rcvd_mb = rcvd_bytes/1024/1024 | sort -sent_mb - rcvd_mb | head 20 | table hostname sent_mb rcvd_mb duration",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesWebTab.push(searchWebFortigateTransferByHostname);
+
+		var searchWebTopMimeTypes = new SearchManager({
+			"id": "searchWebTopMimeTypes",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" sourcetype=bro_files $selExcludedMimeTypes$ | top mime_type | sort count",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesWebTab.push(searchWebTopMimeTypes);
+
+		var searchWebTopUserAgents = new SearchManager({
+			"id": "searchWebTopUserAgents",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=$selCirtaID$  sourcetype=bro_http | top user_agent",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true, tokenNamespace: "submitted"});
+		
+		searchesWebTab.push(searchWebTopUserAgents);
+
+		var searchMimeTypeDropdown = new SearchManager({
+			"id": "searchMimeTypeDropdown",
+			"status_buckets": 0,
+			"search": "index=cirta_data source=\"$selCirtaID$\" sourcetype=bro_files mime_type!=\"-\" mime_type!=\"application/xml\" | stats count by mime_type | sort - count",
+			"latest_time": "$latest$",
+			"earliest_time": "0",
+			"cancelOnUnload": true,
+			"app": utils.getCurrentApp(),
+			"auto_cancel": 90,
+			"preview": true,
+			"runWhenTimeIsUndefined": false
+		}, {tokens: true});
+
+		searchesWebTab.push(searchMimeTypeDropdown);
+		
+		//
+		// VIEWS: VISUALIZATION ELEMENTS
+		//
+
+		var tableWebFortigateBlocks = new TableElement({
+			"id": "tableWebFortigateBlocks",
+			"count": 10,
+			"dataOverlayMode": "none",
+			"drilldown": "cell",
+			"rowNumbers": "false",
+			"wrap": "true",
+			"managerid": "searchWebFortigateBlocks",
+			"el": $('#tableWebFortigateBlocks')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		var chartWebFortigateTransferByHostname = new ChartElement({
+			"id": "chartWebFortigateTransferByHostname",
+			"charting.axisY2.enabled": "false",
+			"charting.axisTitleX.visibility": "visible",
+			"charting.chart.bubbleMinimumSize": "10",
+			"charting.axisX.scale": "linear",
+			"charting.legend.placement": "right",
+			"charting.chart.bubbleMaximumSize": "50",
+			"charting.chart.nullValueMode": "gaps",
+			"charting.layout.splitSeries": "0",
+			"charting.chart.stackMode": "default",
+			"charting.drilldown": "all",
+			"charting.chart.sliceCollapsingThreshold": "0.01",
+			"charting.axisTitleY.visibility": "visible",
+			"charting.chart": "bubble",
+			"charting.axisY.scale": "linear",
+			"charting.axisTitleY2.visibility": "visible",
+			"resizable": true,
+			"charting.chart.bubbleSizeBy": "area",
+			"charting.axisLabelsX.majorLabelStyle.overflowMode": "ellipsisNone",
+			"charting.axisLabelsX.majorLabelStyle.rotation": "0",
+			"charting.chart.style": "shiny",
+			"charting.axisY2.scale": "inherit",
+			"charting.legend.labelStyle.overflowMode": "ellipsisMiddle",
+			"managerid": "searchWebFortigateTransferByHostname",
+			"el": $('#chartWebFortigateTransferByHostname')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+
+		var chartWebTopMimeTypes = new ChartElement({
+			"id": "chartWebTopMimeTypes",
+			"charting.axisY2.enabled": "false",
+			"charting.axisTitleX.visibility": "visible",
+			"charting.chart.bubbleMinimumSize": "10",
+			"charting.axisX.scale": "linear",
+			"charting.legend.placement": "right",
+			"charting.chart.bubbleMaximumSize": "50",
+			"charting.chart.nullValueMode": "gaps",
+			"charting.layout.splitSeries": "0",
+			"charting.chart.stackMode": "default",
+			"charting.drilldown": "all",
+			"charting.chart.sliceCollapsingThreshold": "0.01",
+			"charting.axisTitleY.visibility": "visible",
+			"charting.chart": "pie",
+			"charting.axisY.scale": "linear",
+			"charting.axisTitleY2.visibility": "visible",
+			"resizable": true,
+			"charting.chart.bubbleSizeBy": "area",
+			"charting.axisLabelsX.majorLabelStyle.overflowMode": "ellipsisNone",
+			"charting.axisLabelsX.majorLabelStyle.rotation": "0",
+			"charting.chart.style": "shiny",
+			"charting.axisY2.scale": "inherit",
+			"charting.legend.labelStyle.overflowMode": "ellipsisMiddle",
+			"managerid": "searchWebTopMimeTypes",
+			"el": $('#chartWebTopMimeTypes')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+
+		
+		var chartWebTopUserAgents = new TableElement({
+			"id": "chartWebTopUserAgents",
+			"count": 10,
+			"dataOverlayMode": "none",
+			"drilldown": "cell",
+			"rowNumbers": "false",
+			"wrap": "true",
+			"managerid": "searchWebTopUserAgents",
+			"el": $('#chartWebTopUserAgents')
+		}, {tokens: true, tokenNamespace: "submitted"}).render();
+		
+		//
+		// VIEWS: FORM INPUTS
+		//
+		
+		var inputMimeTypeDropdown = new MultiSelectInput({
+			"id": "inputMimeTypeDropdown",
+			"choices": [
+				{"value": "-", "label": "Null"},
+				{"value": "image/*", "label": "Images"},
+				{"value": "text/*", "label": "Text"},
+				{"value": "application/xml", "label": "XML"},
+				{"value": "NONE", "label": "No Exclusions"}
+			],
+			"searchWhenChanged": true,
+			"delimiter": " ",
+			"labelField": "mime_type",
+			"valueField": "mime_type",
+			"valuePrefix": "mime_type!=\"",
+			"valueSuffix": "\"",
+			"default": ["-", "image/*", "text/*", "application/xml"],
+			"value": "$form.selExcludedMimeTypes$",
+			"managerid": "searchMimeTypeDropdown",
+			"el": $('#inputMimeTypeDropdown')
+		}, {tokens: true}).render();
+
+		inputMimeTypeDropdown.on("change", function(newValue) {
+			FormUtils.handleValueChange(inputMimeTypeDropdown);
+		});
+		
+		
+		
+		//
+		// SPLUNK HEADER AND FOOTER
+		//
+
+		new HeaderView({
+			id: 'header',
+			section: 'dashboards',
+			el: $('.header'),
+			acceleratedAppNav: true,
+			useSessionStorageCache: true,
+			splunkbar: true,
+			appbar: true,
+			litebar: false,
+		}, {tokens: true}).render();
+
+		new FooterView({
+			id: 'footer',
+			el: $('.footer')
+		}, {tokens: true}).render();
+
+
+		//
+		// DASHBOARD EDITOR
+		//
+
+		new Dashboard({
+			id: 'dashboard',
+			el: $('.dashboard-body'),
+			showTitle: true,
+			editable: true
+		}, {tokens: true}).render();
+
+
+		// Redraw chart
+        function invalidateChart(chart) {
+		    chart.visualization.createChart();
+            //if (chart && chart.visualization)
+            //    chart.visualization.invalidateChart();
+        }
+
+		// Hide inactive tabs
+		function activateTab(tabToActivate){
+			var tabs = ["#detailsTab", "#stageTab","#categoryTab", "#alertTab", "#networkTab", "#userTab", "#webTab"]
+			
+			for	(index = 0; index < tabs.length; index++) {
+				if (tabs[index] != tabToActivate){
+					$(tabs[index]).hide();
+				}
+			$(tabToActivate).show();
+			}
+		}
+		
+		// Bootstrap tabs
+		require(["contrib/bootstrap-2.3.1/bootstrap-tab"], function() {
+			//$('#myTabs a:last').tab('show');
+	
+			
+			$('#myTabs a[href=#detailsTab]').click(function (e) {
+				e.preventDefault();
+				activateTab('#detailsTab');
+				//$('#alertTab').hide();
+				//$('#stageTab').hide();
+				//$('#networkTab').hide();
+				//$('#userTab').hide();
+				//$('#webTab').hide();
+				//$('#detailsTab').show();
+				$(this).tab('show');
+				// Charts disappear when switching tabs (container height is 0 for some reason),
+				// so redraw manually
+				//invalidateChart(chartAlertSguilOverTime);
+				//invalidateChart(chartUsageToday);
+				//invalidateChart(chartUsagePerPoolToday);
+				//invalidateChart(chartPctUsagePerPoolToday);
+			});
+			
+			$('#myTabs a[href=#stageTab]').click(function (e) {
+				e.preventDefault();
+				activateTab('#stageTab');
+				//$('#detailsTab').hide();
+				//$('#alertTab').hide();
+				//$('#networkTab').hide();
+				//$('#userTab').hide();
+				//$('#webTab').hide();
+				//$('#stageTab').show();
+				$(this).tab('show');
+				// Charts disappear when switching tabs (container height is 0 for some reason),
+				// so redraw manually
+				//invalidateChart(chartUsageToday);
+				//invalidateChart(chartUsagePerPoolToday);
+				//invalidateChart(chartPctUsagePerPoolToday);
+			});
+			
+			$('#myTabs a[href=#categoryTab]').click(function (e) {
+				e.preventDefault();
+				activateTab('#categoryTab');
+				//$('#detailsTab').hide();
+				//$('#alertTab').hide();
+				//$('#networkTab').hide();
+				//$('#userTab').hide();
+				//$('#webTab').hide();
+				//$('#stageTab').show();
+				$(this).tab('show');
+				// Charts disappear when switching tabs (container height is 0 for some reason),
+				// so redraw manually
+				//invalidateChart(chartUsageToday);
+				//invalidateChart(chartUsagePerPoolToday);
+				//invalidateChart(chartPctUsagePerPoolToday);
+			});
+			
+			$('#myTabs a[href=#alertTab]').click(function (e) {
+				e.preventDefault();
+				activateTab('#alertTab');
+				//$('#detailsTab').hide();
+				//$('#stageTab').hide();
+				//$('#networkTab').hide();
+				//$('#userTab').hide();
+				//$('#webTab').hide();
+				//$('#alertTab').show();
+				$(this).tab('show');
+				// Charts disappear when switching tabs (container height is 0 for some reason),
+				// so redraw manually
+				invalidateChart(chartAlertSguilOverTime);
+				//invalidateChart(chartUsageToday);
+				//invalidateChart(chartUsagePerPoolToday);
+				//invalidateChart(chartPctUsagePerPoolToday);
+			});
+	
+			$('#myTabs a[href=#networkTab]').click(function (e) {
+				e.preventDefault();
+				activateTab('#networkTab');
+				//$('#detailsTab').hide();
+				//$('#stageTab').hide();
+				//$('#alertTab').hide();
+				//$('#userTab').hide();
+				//$('#webTab').hide();
+				//$('#networkTab').show();
+				$(this).tab('show');
+				// Charts disappear when switching tabs (container height is 0 for some reason),
+				// so redraw manually
+				invalidateChart(chartNetworkFlowOverTime);
+				//invalidateChart(chartUsageToday);
+				//invalidateChart(chartUsagePerPoolToday);
+				//invalidateChart(chartPctUsagePerPoolToday);
+			});
+			
+			$('#myTabs a[href=#userTab]').click(function (e) {
+				e.preventDefault();
+				activateTab('#userTab');
+				//$('#detailsTab').hide();
+				//$('#stageTab').hide();
+				//$('#alertTab').hide();
+				//$('#networkTab').hide();
+				//$('#webTab').hide();
+				//$('#userTab').show();
+				$(this).tab('show');
+				// Charts disappear when switching tabs (container height is 0 for some reason),
+				// so redraw manually
+				//invalidateChart(chartUsageToday);
+				//invalidateChart(chartUsagePerPoolToday);
+				//invalidateChart(chartPctUsagePerPoolToday);
+			});
+			
+			$('#myTabs a[href=#webTab]').click(function (e) {
+				e.preventDefault();
+				activateTab('#webTab');
+				//$('#detailsTab').hide();
+				//$('#stageTab').hide();
+				//$('#alertTab').hide();
+				//$('#userTab').hide();
+				//$('#networkTab').hide();
+				//$('#webTab').show();
+				$(this).tab('show');
+				// Charts disappear when switching tabs (container height is 0 for some reason),
+				// so redraw manually
+				invalidateChart(chartWebFortigateTransferByHostname);
+				//invalidateChart(chartUsageToday);
+				//invalidateChart(chartUsagePerPoolToday);
+				//invalidateChart(chartPctUsagePerPoolToday);
+			});
+			
+		});
+		
+
+		// 
+		// SUBMIT FORM DATA
+		//
+
+		var submit = new SubmitButton({
+			id: 'submit',
+			el: $('#search_btn')
+		}, {tokens: true}).render();
+
+		submit.on("submit", function() {
+			submitTokens();
+		});
+		
+		
+
+		// Initialize time tokens to default
+		if (!defaultTokenModel.has('earliest') && !defaultTokenModel.has('latest')) {
+			defaultTokenModel.set({ earliest: '0', latest: '' });
+		}
+
+		if (!_.isEmpty(urlTokenModel.toJSON())){
+			submitTokens();
+		}
+
+
+		//
+		// DASHBOARD READY
+		//
+
+		DashboardController.ready();
+		pageLoading = false;
+
+	}
+);
+</script>
+</body>
+</html>
