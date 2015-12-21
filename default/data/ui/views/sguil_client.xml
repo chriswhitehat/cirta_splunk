@@ -1,0 +1,368 @@
+<form>
+  <label>Sguil Client</label>
+  <fieldset submitButton="true">
+    <input type="text" token="selAlertID">
+      <label>Alert ID</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selHost1" searchWhenChanged="true">
+      <label>Source IP</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selPort1" searchWhenChanged="true">
+      <label>Source Port</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selHost2" searchWhenChanged="true">
+      <label>Destination IP</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selPort2" searchWhenChanged="true">
+      <label>Destination Port</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selSignature" searchWhenChanged="true">
+      <label>Signature</label>
+      <default>*</default>
+    </input>
+    <input type="multiselect" token="selSeverity">
+      <label>Severity</label>
+      <choice value="*">All</choice>
+      <choice value="High">High</choice>
+      <choice value="Medium">Medium</choice>
+      <choice value="Low">Low</choice>
+      <default>*</default>
+    </input>
+    <input type="time" token="selTime" searchWhenChanged="true">
+      <label></label>
+      <default>
+        <earliest>-4h@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <search id="sguilBase">
+    <query>index=sguil sourcetype=sguil_alerts   ((src="$selHost1$" AND dest="$selHost2$") OR (src="$selHost2$" AND dest="$selHost1$")) ((src_port="$selPort1$" AND dest_port="$selPort2$") OR (src_port="$selPort2$" AND dest_port="$selPort1$")) signature="$selSignature$" severity="$selSeverity$" | eval alert_id = sid.".".cid | search alert_id="$selAlertID$" | table  sensor alert_id _time src src_port dest dest_port prot severity signature</query>
+    <earliest>$selTime.earliest$</earliest>
+    <latest>$selTime.latest$</latest>
+  </search>
+  <row>
+    <panel>
+      <title>Sguil Alerts</title>
+      <table>
+        <search base="sguilBase"></search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+        <drilldown>
+          <condition field="alert_id">
+            <set token="selAlertID">$click.value2$</set>
+            <set token="form.selAlertID">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="src">
+            <set token="selHost1">$click.value2$</set>
+            <set token="form.selHost1">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="dest">
+            <set token="selHost2">$click.value2$</set>
+            <set token="form.selHost2">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="src_port">
+            <set token="selPort1">$click.value2$</set>
+            <set token="form.selPort1">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="dest_port">
+            <set token="selPort2">$click.value2$</set>
+            <set token="form.selPort2">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="severity">
+            <set token="selSeverity">$click.value2$</set>
+            <set token="form.selSeverity">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="signature">
+            <set token="selSignature">$click.value2$</set>
+            <set token="form.selSignature">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="_time">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="sensor">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="prot">
+            <unset token="NOP"></unset>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Sguil Alerts over Time</title>
+        <search base="sguilBase">
+          <query>timechart useother=f count by signature</query>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="charting.chart">line</option>
+        <drilldown>
+          <set token="form.selSignature">$click.name2$</set>
+          <set token="selSignature">$click.name2$</set>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Bro Conn</title>
+      <input type="text" token="selUID" searchWhenChanged="true">
+        <label>UID</label>
+        <default>*</default>
+      </input>
+      <table>
+        <search>
+          <query>index=bro_conn uid="$selUID$" ((src="$selHost1$" AND dest="$selHost2$") OR (src="$selHost2$" AND dest="$selHost1$")) ((src_port="$selPort1$" AND dest_port="$selPort2$") OR (src_port="$selPort2$" AND dest_port="$selPort1$")) | rename orig_bytes AS src_bytes resp_bytes AS dest_bytes orig_pkts AS src_pkts resp_pkts AS dest_pkts | table _time uid src src_port dest dest_port src_pkts dest_pkts src_bytes  dest_bytes conn_state_meaning | sort 0 -_time</query>
+          <earliest>$selTime.earliest$</earliest>
+          <latest>$selTime.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">20</option>
+        <drilldown>
+          <condition field="src">
+            <set token="selHost1">$click.value2$</set>
+            <set token="form.selHost1">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="dest">
+            <set token="selHost2">$click.value2$</set>
+            <set token="form.selHost2">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="uid">
+            <set token="selUID">$click.value2$</set>
+            <set token="form.selUID">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="_time">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="src_port">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="dest_port">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="src_pkts">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="dest_pkts">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="src_bytes">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="dest_bytes">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="conn_state_meaning">
+            <unset token="NOP"></unset>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="multiselect" token="selConnStat" searchWhenChanged="true">
+        <label>Stat</label>
+        <choice value="count AS event_count">count</choice>
+        <choice value="sum(duration) AS duration">sum(duration)</choice>
+        <choice value="sum(orig_bytes) AS orig_bytes">sum(orig_bytes)</choice>
+        <choice value="sum(orig_pkts) AS orig_pkts">sum(orig_pkts)</choice>
+        <choice value="sum(resp_bytes) AS resp_bytes">sum(resp_bytes)</choice>
+        <choice value="sum(resp_pkts) AS resp_pkts">sum(resp_pkts)</choice>
+        <default>count</default>
+      </input>
+      <input type="dropdown" token="selConnField" searchWhenChanged="true">
+        <label>By</label>
+        <choice value="action">action</choice>
+        <choice value="conn_state">conn_state</choice>
+        <choice value="conn_state_meaning">conn_state_meaning</choice>
+        <choice value="history">history</choice>
+        <choice value="id_orig_h">id_orig_h</choice>
+        <choice value="id_orig_p">id_orig_p</choice>
+        <choice value="id_resp_h">id_resp_h</choice>
+        <choice value="id_resp_p">id_resp_p</choice>
+        <choice value="proto">proto</choice>
+        <choice value="sensorname">sensorname</choice>
+        <choice value="service">service</choice>
+        <choice value="uid">uid</choice>
+        <default>id_resp_h</default>
+      </input>
+      <input type="radio" token="selConnUseOther">
+        <label>Use Other</label>
+        <choice value="t">True</choice>
+        <choice value="f">False</choice>
+        <default>f</default>
+      </input>
+      <chart>
+        <title>Conn over Time -  $selHost1$  &lt;-&gt; $selHost2$</title>
+        <search>
+          <query>eventtype=bro_conn uid="$selUID$" ((src="$selHost1$" AND dest="$selHost2$") OR (src="$selHost2$" AND dest="$selHost1$")) ((src_port="$selPort1$" AND dest_port="$selPort2$") OR (src_port="$selPort2$" AND dest_port="$selPort1$"))  | timechart limit=20 useother=$selConnUseOther$ $selConnStat$ by $selConnField$</query>
+          <earliest>$selTime.earliest$</earliest>
+          <latest>$selTime.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">zero</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <selection>
+          <set token="selectedEarliest">$start$</set>
+          <set token="selectedLatest">$end$</set>
+        </selection>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Bro Sourcetypes</title>
+        <search>
+          <query>eventtype=bro_* uid="$selUID$" ((src="$selHost1$" AND dest="$selHost2$") OR (src="$selHost2$" AND dest="$selHost1$")) ((src_port="$selPort1$" AND dest_port="$selPort2$") OR (src_port="$selPort2$" AND dest_port="$selPort1$")) | chart sparkline count by sourcetype | sort - count</query>
+          <earliest>$selectedEarliest$</earliest>
+          <latest>$selectedLatest$</latest>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">log</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <drilldown>
+          <set token="selBroSourcetype">$click.value$</set>
+        </drilldown>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+      </table>
+    </panel>
+    <panel>
+      <chart>
+        <title>Bro Sourcetype - $selBroSourcetype$</title>
+        <search>
+          <query>eventtype=bro* sourcetype=$selBroSourcetype$ uid="$selUID$" ((src="$selHost1$" AND dest="$selHost2$") OR (src="$selHost2$" AND dest="$selHost1$")) ((src_port="$selPort1$" AND dest_port="$selPort2$") OR (src_port="$selPort2$" AND dest_port="$selPort1$")) | timechart count by sourcetype</query>
+          <earliest>$selectedEarliest$</earliest>
+          <latest>$selectedLatest$</latest>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <selection>
+          <set token="selectedSourcetypeEarliest">$start$</set>
+          <set token="selectedSourcetypeLatest">$end$</set>
+        </selection>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="text" token="selFilterAddition">
+        <label>Filter Addition</label>
+        <default>*</default>
+      </input>
+      <event>
+        <title>Bro Sourcetype - $selBroSourcetype$</title>
+        <search>
+          <query>eventtype=bro* sourcetype=$selBroSourcetype$ uid="$selUID$" ((src="$selHost1$" AND dest="$selHost2$") OR (src="$selHost2$" AND dest="$selHost1$")) ((src_port="$selPort1$" AND dest_port="$selPort2$") OR (src_port="$selPort2$" AND dest_port="$selPort1$")) $selFilterAddition$</query>
+          <earliest>$selectedSourcetypeEarliest$</earliest>
+          <latest>$selectedSourcetypeLatest$</latest>
+        </search>
+        <option name="list.drilldown">none</option>
+        <option name="list.wrap">1</option>
+        <option name="maxLines">10</option>
+        <option name="raw.drilldown">none</option>
+        <option name="rowNumbers">1</option>
+        <option name="table.drilldown">none</option>
+        <option name="table.wrap">1</option>
+        <option name="type">list</option>
+        <option name="wrap">true</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+        <fields>[]</fields>
+      </event>
+    </panel>
+  </row>
+</form>

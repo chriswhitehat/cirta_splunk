@@ -1,0 +1,228 @@
+<form>
+  <label>Bro FTW</label>
+  <fieldset submitButton="true">
+    <input type="text" token="selOrigHost" searchWhenChanged="true">
+      <label>Originating Host</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selRespHost" searchWhenChanged="true">
+      <label>Responding Host</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selUID" searchWhenChanged="true">
+      <label>UID</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="selAddition" searchWhenChanged="true">
+      <label>Search Addition</label>
+      <default>*</default>
+    </input>
+    <input type="time" token="selTime" searchWhenChanged="true">
+      <label></label>
+      <default>
+        <earliest>-4h@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Bro Conn</title>
+      <input type="text" token="selOrigPort">
+        <label>Origination Port</label>
+        <default>*</default>
+      </input>
+      <input type="text" token="selRespPort">
+        <label>Responding Port</label>
+        <default>*</default>
+      </input>
+      <table>
+        <search>
+          <query>eventtype=bro_conn uid="$selUID$" id_orig_h="$selOrigHost$" id_resp_h="$selRespHost$" id_orig_p="$selOrigPort$" id_resp_p="$selRespPort$" $selAddition$ | table _time  uid id_orig_h id_orig_p id_resp_h id_resp_p orig_pkts resp_pkts orig_bytes resp_bytes conn_state_meaning</query>
+          <earliest>$selTime.earliest$</earliest>
+          <latest>$selTime.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">20</option>
+        <drilldown>
+          <condition field="id_orig_h">
+            <set token="selOrigHost">$click.value2$</set>
+            <set token="form.selOrigHost">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="id_resp_h">
+            <set token="selRespHost">$click.value2$</set>
+            <set token="form.selRespHost">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="uid">
+            <set token="selUID">$click.value2$</set>
+            <set token="form.selUID">$click.value2$</set>
+            <set token="connClicked">*</set>
+          </condition>
+          <condition field="_time">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="id_orig_p">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="id_resp_p">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="orig_pkts">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="resp_pkts">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="orig_bytes">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="resp_bytes">
+            <unset token="NOP"></unset>
+          </condition>
+          <condition field="conn_state_meaning">
+            <unset token="NOP"></unset>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Bro Conn</title>
+      <input type="multiselect" token="selConnStat" searchWhenChanged="true">
+        <label>Stat</label>
+        <choice value="count AS event_count">count</choice>
+        <choice value="sum(duration) AS duration">sum(duration)</choice>
+        <choice value="sum(orig_bytes) AS orig_bytes">sum(orig_bytes)</choice>
+        <choice value="sum(orig_pkts) AS orig_pkts">sum(orig_pkts)</choice>
+        <choice value="sum(resp_bytes) AS resp_bytes">sum(resp_bytes)</choice>
+        <choice value="sum(resp_pkts) AS resp_pkts">sum(resp_pkts)</choice>
+        <default>count</default>
+      </input>
+      <input type="dropdown" token="selConnField" searchWhenChanged="true">
+        <label>By</label>
+        <choice value="action">action</choice>
+        <choice value="conn_state">conn_state</choice>
+        <choice value="conn_state_meaning">conn_state_meaning</choice>
+        <choice value="history">history</choice>
+        <choice value="id_orig_h">id_orig_h</choice>
+        <choice value="id_orig_p">id_orig_p</choice>
+        <choice value="id_resp_h">id_resp_h</choice>
+        <choice value="id_resp_p">id_resp_p</choice>
+        <choice value="proto">proto</choice>
+        <choice value="sensorname">sensorname</choice>
+        <choice value="service">service</choice>
+        <choice value="uid">uid</choice>
+        <default>id_resp_h</default>
+      </input>
+      <input type="radio" token="selConnUseOther">
+        <label>Use Other</label>
+        <choice value="t">True</choice>
+        <choice value="f">False</choice>
+        <default>f</default>
+      </input>
+      <chart>
+        <title>Conn over Time -  $selOrigHost$  &lt;-&gt; $selRespHost$</title>
+        <search>
+          <query>eventtype=bro_conn uid="$selUID$" id_orig_h="$selOrigHost$" id_resp_h="$selRespHost$" $selAddition$ | timechart limit=20 useother=$selConnUseOther$ $selConnStat$ by $selConnField$</query>
+          <earliest>$selTime.earliest$</earliest>
+          <latest>$selTime.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">zero</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <selection>
+          <set token="selectedEarliest">$start$</set>
+          <set token="selectedLatest">$end$</set>
+        </selection>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Bro Sourcetypes</title>
+        <search>
+          <query>eventtype=bro_* uid="$selUID$" id_orig_h="$selOrigHost$" id_resp_h="$selRespHost$" $selAddition$ | stats count by sourcetype | sort - count</query>
+          <earliest>$selectedEarliest$</earliest>
+          <latest>$selectedLatest$</latest>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">log</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <drilldown>
+          <set token="selBroSourcetype">$click.value$</set>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <event>
+        <title>Bro Sourcetype - $selBroSourcetype$</title>
+        <search>
+          <query>eventtype=bro* sourcetype=$selBroSourcetype$ uid="$selUID$" id_orig_h="$selOrigHost$" id_resp_h="$selRespHost$" $selAddition$</query>
+          <earliest>$selectedEarliest$</earliest>
+          <latest>$selectedLatest$</latest>
+        </search>
+        <option name="list.drilldown">none</option>
+        <option name="list.wrap">1</option>
+        <option name="maxLines">10</option>
+        <option name="raw.drilldown">none</option>
+        <option name="rowNumbers">1</option>
+        <option name="table.drilldown">none</option>
+        <option name="table.wrap">1</option>
+        <option name="type">list</option>
+        <option name="wrap">true</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+        <fields>[]</fields>
+      </event>
+    </panel>
+  </row>
+</form>

@@ -2,6 +2,8 @@
   <view name="search" />
   <a href="incident_status" default="true">Incident Status</a>
   <a href="incident_details">Incident Details</a>
+  <view name="sguil_client" />
+  <view name="bro_ids" />
   <collection label="Metrics">
     <view name="incident_metrics" />
     <view name="stage_metrics" />
